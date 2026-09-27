@@ -1,13 +1,12 @@
-<div align="center">
+# Fanglu Sun — Research Notes
 
-# SimpleBlog - A Blog Website
+A personal research-notes site for [Fanglu Sun (孙芳露)](https://sunfanglu.github.io/). The layout started from the SimpleBlog template and now carries her public profile, research topics, and short notes that point back to the academic site.
 
-SimpleBlog is a completely responsive personal blog website that is compatible with all mobile devices, has Dark and light themes, and is built using HTML, CSS, and JavaScript.
+## Pages
 
- <a href="https://codingstella.github.io/personal-blog-website/"><strong>➥ Live Demo</strong></a> 
- 
- </div>
+- `index.html` — home and latest notes
+- `about.html` — positions, education, and research interests
+- `contact.html` — public contact details from the CV
+- `posts/` — individual notes linked to publications and the Security Council briefing
 
-## License
-
-This project is **free to use** and does not contains any license and Don't Forget to give credit.
+Open `index.html` in a browser, or serve the folder locally.

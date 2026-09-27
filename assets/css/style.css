@@ -1008,6 +1008,7 @@ footer .wrapper { text-align: center; }
     width:  45px;
     height: 45px;
     background: var(--action-secondary);
+    color: var(--foreground-primary);
     border-radius: 50%;
     display:         flex;
     justify-content: center;
@@ -1071,4 +1072,81 @@ footer .wrapper { text-align: center; }
 
   .footer-link { margin-bottom: 0.3rem; }
 
+}
+
+/* 站点名用文字，不再依赖缺失的示例 logo 图片 */
+.site-logo {
+  color: var(--foreground-primary);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.site-logo:hover { color: var(--accent); }
+
+/* 筛选后隐藏卡片；媒体查询里的 grid 会盖过 hidden 的默认隐藏 */
+.blog-card[hidden] { display: none; }
+
+.topic-btn.is-active .icon-box {
+  background: var(--accent);
+  color: var(--white);
+}
+
+/* 侧栏主题按钮是 button，需要拉满宽度；移动菜单里的筛选项沿用导航字色 */
+button.topic-btn {
+  width: 100%;
+  text-align: left;
+}
+
+button.nav-link { text-align: left; }
+
+/* 文章页：限制阅读宽度，正文与引用分层 */
+.article {
+  background: var(--background-primary);
+  padding: 2.5rem 0 var(--py);
+}
+
+.article .container { max-width: 760px; }
+
+.article h1 {
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+.article .kicker {
+  color: var(--accent);
+  font-size: var(--fs-5);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.article .meta {
+  color: var(--foreground-tertiary);
+  margin-bottom: 1.75rem;
+}
+
+.article p,
+.article li {
+  color: var(--foreground-secondary);
+  margin-bottom: 1rem;
+}
+
+.article h2 {
+  font-size: var(--fs-3);
+  margin: 2rem 0 0.75rem;
+}
+
+.article ul { margin: 0 0 1rem 1.25rem; }
+
+.article a { color: var(--accent); }
+
+.article a:hover { text-decoration: underline; }
+
+.article .note {
+  background: var(--background-secondary);
+  border-radius: 10px;
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
 }

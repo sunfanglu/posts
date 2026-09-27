@@ -1,41 +1,54 @@
 'use strict';
 
-// navbar variables
+// 移动端菜单开关
 const nav = document.querySelector('.mobile-nav');
 const navMenuBtn = document.querySelector('.nav-menu-btn');
 const navCloseBtn = document.querySelector('.nav-close-btn');
 
-
-// navToggle function
 const navToggleFunc = function () { nav.classList.toggle('active'); }
 
 navMenuBtn.addEventListener('click', navToggleFunc);
 navCloseBtn.addEventListener('click', navToggleFunc);
 
-
-
-// theme toggle variables
+// 浅色 / 深色主题切换，桌面和手机按钮一起变
 const themeBtn = document.querySelectorAll('.theme-btn');
-
 
 for (let i = 0; i < themeBtn.length; i++) {
 
   themeBtn[i].addEventListener('click', function () {
 
-    // toggle `light-theme` & `dark-theme` class from `body`
-    // when clicked `theme-btn`
     document.body.classList.toggle('light-theme');
     document.body.classList.toggle('dark-theme');
 
-    for (let i = 0; i < themeBtn.length; i++) {
-
-      // When the `theme-btn` is clicked,
-      // it toggles classes between `light` & `dark` for all `theme-btn`.
-      themeBtn[i].classList.toggle('light');
-      themeBtn[i].classList.toggle('dark');
-
+    for (let j = 0; j < themeBtn.length; j++) {
+      themeBtn[j].classList.toggle('light');
+      themeBtn[j].classList.toggle('dark');
     }
 
   })
 
 }
+
+// 首页按研究主题筛选卡片；其他页面没有这些节点时直接跳过
+const cards = document.querySelectorAll('.blog-card');
+const filterButtons = document.querySelectorAll('[data-filter]');
+
+function applyFilter(topic) {
+  cards.forEach(function (card) {
+    const match = topic === 'all' || card.dataset.topic === topic;
+    card.hidden = !match;
+  });
+
+  filterButtons.forEach(function (button) {
+    button.classList.toggle('is-active', button.dataset.filter === topic);
+  });
+}
+
+filterButtons.forEach(function (button) {
+  button.addEventListener('click', function () {
+    applyFilter(button.dataset.filter);
+    if (nav.classList.contains('active')) nav.classList.remove('active');
+    const blog = document.querySelector('#writing');
+    if (blog) blog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});

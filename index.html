@@ -5,21 +5,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SimpleBlog - Julia Walker's Personal Blog</title>
-
-  <!--
-    - favicon
-  -->
-  <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
-
-  <!--
-    - custom css link
-  -->
+  <title>Fanglu Sun — Research Notes</title>
+  <meta name="description" content="Research notes by Fanglu Sun, Assistant Professor of International Studies at Xi'an Jiaotong-Liverpool University.">
+  <link rel="icon" href="./assets/images/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/css/style.css">
-
-  <!--
-    - google font link
-  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
@@ -28,855 +17,396 @@
 
 <body class="light-theme">
 
-  <!--
-    - #HEADER
-  -->
-
   <header>
-
     <div class="container">
-
       <nav class="navbar">
 
-        <a href="#">
-          <img src="./assets/images/logo-light.svg" alt="SimpleBlog logo" width="150" class="logo-light">
-          <img src="./assets/images/logo-dark.svg" alt="SimpleBlog logo" width="150" class="logo-dark">
-        </a>
+        <a href="./index.html" class="site-logo">Fanglu Sun</a>
 
         <div class="btn-group">
-
-          <button class="theme-btn theme-btn-mobile light">
+          <button class="theme-btn theme-btn-mobile light" aria-label="Toggle color theme">
             <ion-icon name="moon" class="moon"></ion-icon>
             <ion-icon name="sunny" class="sun"></ion-icon>
           </button>
-
-          <button class="nav-menu-btn">
+          <button class="nav-menu-btn" aria-label="Open menu">
             <ion-icon name="menu-outline"></ion-icon>
           </button>
-
         </div>
 
         <div class="flex-wrapper">
-
           <ul class="desktop-nav">
-
-            <li>
-              <a href="#" class="nav-link">Home</a>
-            </li>
-
-            <li>
-              <a href="#" class="nav-link">About Me</a>
-            </li>
-
-            <li>
-              <a href="#" class="nav-link">Contact</a>
-            </li>
-
+            <li><a href="./index.html" class="nav-link">Home</a></li>
+            <li><a href="./about.html" class="nav-link">About</a></li>
+            <li><a href="./contact.html" class="nav-link">Contact</a></li>
+            <li><a href="https://sunfanglu.github.io/" class="nav-link">Academic site</a></li>
           </ul>
-
-          <button class="theme-btn theme-btn-desktop light">
+          <button class="theme-btn theme-btn-desktop light" aria-label="Toggle color theme">
             <ion-icon name="moon" class="moon"></ion-icon>
             <ion-icon name="sunny" class="sun"></ion-icon>
           </button>
-
         </div>
 
         <div class="mobile-nav">
-
-          <button class="nav-close-btn">
+          <button class="nav-close-btn" aria-label="Close menu">
             <ion-icon name="close-outline"></ion-icon>
           </button>
-
           <div class="wrapper">
-
             <p class="h3 nav-title">Main Menu</p>
-
             <ul>
-              <li class="nav-item">
-                <a href="#" class="nav-link">Home</a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#" class="nav-link">About Me</a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#" class="nav-link">Contact</a>
-              </li>
+              <li class="nav-item"><a href="./index.html" class="nav-link">Home</a></li>
+              <li class="nav-item"><a href="./about.html" class="nav-link">About</a></li>
+              <li class="nav-item"><a href="./contact.html" class="nav-link">Contact</a></li>
+              <li class="nav-item"><a href="https://sunfanglu.github.io/" class="nav-link">Academic site</a></li>
             </ul>
-
           </div>
-
           <div>
-
             <p class="h3 nav-title">Topics</p>
-
             <ul>
-              <li class="nav-item">
-                <a href="#" class="nav-link">Database</a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#" class="nav-link">Accessibility</a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#" class="nav-link">Web Performance</a>
-              </li>
+              <li class="nav-item"><button class="nav-link" data-filter="all">All notes</button></li>
+              <li class="nav-item"><button class="nav-link" data-filter="organizations">International Organizations</button></li>
+              <li class="nav-item"><button class="nav-link" data-filter="south">Global South</button></li>
+              <li class="nav-item"><button class="nav-link" data-filter="china">Chinese Foreign Policy</button></li>
+              <li class="nav-item"><button class="nav-link" data-filter="methods">Methods</button></li>
             </ul>
-
           </div>
-
         </div>
 
       </nav>
-
     </div>
-
   </header>
 
-
-
-
-
   <main>
-
-    <!--
-      - #HERO SECTION
-    -->
-
     <div class="hero">
-
       <div class="container">
-
         <div class="left">
-
           <h1 class="h1">
-            Hi, I'm <b>Julia&nbsp;Walker</b>.
-            <br>Web Developer
+            Hi, I'm <b>Fanglu&nbsp;Sun</b>.
+            <br>孙芳露
           </h1>
-
           <p class="h3">
-            Specialized in <abbr title="Accessibility">a11y</abbr>
-            and Core Web Vitals
+            Deputy Head and Assistant Professor, Department of International Studies, Xi'an Jiaotong-Liverpool University.
+            Research on quantitative and big data methods, Chinese foreign policy, the Global South, and international organizations.
           </p>
-
           <div class="btn-group">
-            <a href="#" class="btn btn-primary">Contact Me</a>
-            <a href="#" class="btn btn-secondary">About Me</a>
+            <a href="./about.html" class="btn btn-primary">About Me</a>
+            <a href="https://sunfanglu.github.io/" class="btn btn-secondary">Academic site</a>
           </div>
-
         </div>
-
         <div class="right">
-
           <div class="pattern-bg"></div>
           <div class="img-box">
-            <img src="./assets/images/hero.png" alt="Julia Walker" class="hero-img">
+            <img src="./assets/images/profile.png" alt="Portrait of Fanglu Sun" class="hero-img">
             <div class="shape shape-1"></div>
             <div class="shape shape-2"></div>
           </div>
-
         </div>
-
       </div>
-
     </div>
 
-
-
-
-
     <div class="main">
-
       <div class="container">
-
-        <!--
-          - BLOG SECTION
-        -->
-
-        <div class="blog">
-
-          <h2 class="h2">Latest Blog Post</h2>
-
+        <div class="blog" id="writing">
+          <h2 class="h2">Latest writing</h2>
           <div class="blog-card-group">
 
-            <div class="blog-card">
-
+            <div class="blog-card" data-topic="organizations">
               <div class="blog-card-banner">
-                <img src="./assets/images/blog-1.png" alt="Building microservices with Dropwizard, MongoDB & Docker"
-                  width="250" class="blog-banner-img">
+                <img src="./assets/images/banner-council.svg" alt="" width="250" class="blog-banner-img">
               </div>
-
               <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Database</button>
-
+                <button class="blog-topic text-tiny" data-filter="organizations">International Organizations</button>
                 <h3>
-                  <a href="#" class="h3">
-                    Building microservices with Dropwizard, MongoDB & Docker
+                  <a href="./posts/security-council-10228.html" class="h3">
+                    Security Council, 10228th meeting: artificial intelligence and international security
                   </a>
                 </h3>
-
                 <p class="blog-text">
-                  This NoSQL database oriented to documents (by documents like JSON) combines some of the features from
-                  relational
-                  databases, easy to use and the multi-platform is the best option for scale up and have fault
-                  tolerance, load balancing,
-                  map reduce, etc.
+                  A reading of the meeting organized around three fault lines: who sets the pace of frontier models, whether the Council is the right forum, and who is left out when safety rules are written by a few states and firms.
                 </p>
-
                 <div class="wrapper-flex">
-
                   <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia Walker" width="50">
+                    <img src="./assets/images/profile.png" alt="" width="50">
                   </div>
-
                   <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
+                    <a href="./about.html" class="h4">Fanglu Sun</a>
                     <p class="text-sm">
-                      <time datetime="2022-01-17">Jan 17, 2022</time>
+                      <time datetime="2026-09-26">Sep 26, 2026</time>
+                      <span class="separator"></span>
+                      <ion-icon name="time-outline"></ion-icon>
+                      <time datetime="PT6M">6 min</time>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="blog-card" data-topic="south">
+              <div class="blog-card-banner">
+                <img src="./assets/images/banner-south.svg" alt="" width="250" class="blog-banner-img">
+              </div>
+              <div class="blog-content-wrapper">
+                <button class="blog-topic text-tiny" data-filter="south">Global South</button>
+                <h3>
+                  <a href="./posts/voices-of-the-global-south.html" class="h3">
+                    Voices of the Global South: G77 solidarity in the General Assembly
+                  </a>
+                </h3>
+                <p class="blog-text">
+                  Forthcoming in the International Journal of Arts, Humanities and Social Sciences. The note records the article and the related talks on rising powers, the Global South, and UN voting.
+                </p>
+                <div class="wrapper-flex">
+                  <div class="profile-wrapper">
+                    <img src="./assets/images/profile.png" alt="" width="50">
+                  </div>
+                  <div class="wrapper">
+                    <a href="./about.html" class="h4">Fanglu Sun</a>
+                    <p class="text-sm">
+                      <time datetime="2025-12-01">Dec 1, 2025</time>
                       <span class="separator"></span>
                       <ion-icon name="time-outline"></ion-icon>
                       <time datetime="PT3M">3 min</time>
                     </p>
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
-
-            <div class="blog-card">
-
+            <div class="blog-card" data-topic="methods">
               <div class="blog-card-banner">
-                <img src="./assets/images/blog-2.png" alt="Fast web page loading on a $20 feature phone" width="250"
-                  class="blog-banner-img">
+                <img src="./assets/images/banner-methods.svg" alt="" width="250" class="blog-banner-img">
               </div>
-
               <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Web Performance</button>
-
-                <h3><a href="" class="h3">Fast web page loading on a $20 feature phone</a></h3>
-
+                <button class="blog-topic text-tiny" data-filter="methods">Methods</button>
+                <h3>
+                  <a href="./posts/data-mining-and-political-analysis.html" class="h3">
+                    Data mining and political analysis
+                  </a>
+                </h3>
                 <p class="blog-text">
-                  Feature phones are affordable (under $20-25), low-end devices enabling 100s of millions of users in
-                  developing countries
-                  to leverage the web. Think of them as a light version of a smart phone.
+                  A chapter in Research Methods for Political Science (Fudan University Press, 2024), alongside the textbook project on data mining and analysis in political science.
                 </p>
-
                 <div class="wrapper-flex">
-
                   <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
+                    <img src="./assets/images/profile.png" alt="" width="50">
                   </div>
-
                   <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
+                    <a href="./about.html" class="h4">Fanglu Sun</a>
                     <p class="text-sm">
-                      <time datetime="2021-12-10">Dec 10, 2021</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT2M">2 min</time>
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="blog-card">
-
-              <div class="blog-card-banner">
-                <img src="./assets/images/blog-3.png" alt="Accessibility Tips for Web Developers" width="250"
-                  class="blog-banner-img">
-              </div>
-
-              <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Accessibility</button>
-
-                <h3><a href="" class="h3">Accessibility Tips for Web Developers</a></h3>
-
-                <p class="blog-text">
-                  It's awesome to build sites that are inclusive and accessible to everyone. There are at least six key
-                  areas of
-                  disability we can optimize for: visual, hearing, mobility, cognition, speech and neural. Many tools
-                  and resources can
-                  help here, even if you're totally new to web accessibility.
-                </p>
-
-                <div class="wrapper-flex">
-
-                  <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
-                  </div>
-
-                  <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
-                    <p class="text-sm">
-                      <time datetime="2021-11-28">Nov 28, 2021</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT4M">4 min</time>
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="blog-card">
-
-              <div class="blog-card-banner">
-                <img src="./assets/images/blog-4.png" alt="Dynamically Securing Databases using Hashicorp Vault"
-                  width="250" class="blog-banner-img">
-              </div>
-
-              <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Database</button>
-
-                <h3><a href="" class="h3">Dynamically Securing Databases using Hashicorp Vault</a></h3>
-
-                <p class="blog-text">
-                  Nowadays, it's hard to profoundly talk about security in the IT industry, since it has to be
-                  considered on so many
-                  different levels: from securing code chunks, securing containers, up to securing complex
-                  infrastructures and defining
-                  strong authorization and authentication policies across the enterprise.
-                </p>
-
-                <div class="wrapper-flex">
-
-                  <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
-                  </div>
-
-                  <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
-                    <p class="text-sm">
-                      <time datetime="2021-11-20">Nov 20, 2021</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT4M">4 min</time>
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="blog-card">
-
-              <div class="blog-card-banner">
-                <img src="./assets/images/blog-5.png"
-                  alt="Adaptive Loading - Improving Web Performance on low-end devices" width="250"
-                  class="blog-banner-img">
-              </div>
-
-              <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Web Performance</button>
-
-                <h3><a href="" class="h3">Adaptive Loading - Improving Web Performance on low-end devices</a></h3>
-
-                <p class="blog-text">
-                  Adaptive Loading: Do not just respond based on screen size, adapt based on actual device hardware.
-                  Any user can have a slow experience. In a world with widely varying device capabilities, a "one-size"
-                  fits all
-                  experience may not always work. Sites that delight users on high-end devices can be unusable on
-                  low-end ones,
-                  particularly on median mobile and desktop hardware and in emerging markets.
-                </p>
-
-                <div class="wrapper-flex">
-
-                  <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
-                  </div>
-
-                  <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
-                    <p class="text-sm">
-                      <time datetime="2021-11-10">Nov 10, 2021</time>
+                      <time datetime="2024-12-01">Dec 1, 2024</time>
                       <span class="separator"></span>
                       <ion-icon name="time-outline"></ion-icon>
                       <time datetime="PT3M">3 min</time>
                     </p>
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
-
-            <div class="blog-card">
-
+            <div class="blog-card" data-topic="china">
               <div class="blog-card-banner">
-                <img src="./assets/images/blog-6.png"
-                  alt="Don't Develop Just for Yourself - A Developer's Checklist to Accessibility" width="250"
-                  class="blog-banner-img">
+                <img src="./assets/images/banner-populism.svg" alt="" width="250" class="blog-banner-img">
               </div>
-
               <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Accessibility</button>
-
-                <h3><a href="" class="h3">Don't Develop Just for Yourself - A Developer's Checklist to Accessibility</a>
+                <button class="blog-topic text-tiny" data-filter="china">Chinese Foreign Policy</button>
+                <h3>
+                  <a href="./posts/populism-and-sino-european-relations.html" class="h3">
+                    The rise of populism and its impact on Sino-European relations
+                  </a>
                 </h3>
-
                 <p class="blog-text">
-                  We, as developers, tend to develop sites unconsciously for people like ourselves. If we don't actively
-                  pay attention,
-                  the sites are often accessible only for certain types of people: Sighted mouse-users, who have good
-                  fine motor skills
-                  and are good at using computers.
+                  Published in Italian in OrizzonteCina (2021). Related work includes the Compass Plan report, with Jasmin Hasic, on European populism and Europe–China relations.
                 </p>
-
                 <div class="wrapper-flex">
-
                   <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
+                    <img src="./assets/images/profile.png" alt="" width="50">
                   </div>
-
                   <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
+                    <a href="./about.html" class="h4">Fanglu Sun</a>
                     <p class="text-sm">
-                      <time datetime="2021-10-25">Oct 25, 2021</time>
+                      <time datetime="2021-12-01">Dec 1, 2021</time>
                       <span class="separator"></span>
                       <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT7M">7 min</time>
+                      <time datetime="PT3M">3 min</time>
                     </p>
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
-
-            <div class="blog-card">
-
+            <div class="blog-card" data-topic="china">
               <div class="blog-card-banner">
-                <img src="./assets/images/blog-7.png"
-                  alt="Building a Restful CRUD API with Node JS, Express, and MongoDB" width="250"
-                  class="blog-banner-img">
+                <img src="./assets/images/banner-orders.svg" alt="" width="250" class="blog-banner-img">
               </div>
-
               <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Database</button>
-
-                <h3><a href="" class="h3">Building a Restful CRUD API with Node JS, Express, and MongoDB</a></h3>
-
-                <p class="blog-text">
-                  Application Programming Interface is the abbreviation for API. An API is a software interface that
-                  enables two apps to
-                  communicate with one another. In other words, an API is a messenger that sends your request to the
-                  provider and then
-                  returns the response to you.
-                </p>
-
-                <div class="wrapper-flex">
-
-                  <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
-                  </div>
-
-                  <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
-                    <p class="text-sm">
-                      <time datetime="2021-10-15">Oct 15, 2021</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT5M">5 min</time>
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="blog-card">
-
-              <div class="blog-card-banner">
-                <img src="./assets/images/blog-8.png" alt="Monitoring Performance with the PageSpeed Insights API"
-                  width="250" class="blog-banner-img">
-              </div>
-
-              <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Web Performance</button>
-
-                <h3><a href="" class="h3">Monitoring Performance with the PageSpeed Insights API</a></h3>
-
-                <p class="blog-text">
-                  The PageSpeed Insights API provides free access to performance monitoring for web pages and returns
-                  data with
-                  suggestions for how to improve. The V5 API includes lab data from Lighthouse and real-world data from
-                  the Chrome User
-                  Experience Report (CrUX).
-                </p>
-
-                <div class="wrapper-flex">
-
-                  <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
-                  </div>
-
-                  <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
-                    <p class="text-sm">
-                      <time datetime="2021-10-03">Oct 3, 2021</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT5M">5 min</time>
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="blog-card">
-
-              <div class="blog-card-banner">
-                <img src="./assets/images/blog-9.png" alt="The best web accessibility tools for developers in 2021"
-                  width="250" class="blog-banner-img">
-              </div>
-
-              <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Accessibility</button>
-
-                <h3><a href="" class="h3">The best web accessibility tools for developers in 2021</a>
+                <button class="blog-topic text-tiny" data-filter="china">Chinese Foreign Policy</button>
+                <h3>
+                  <a href="./posts/world-and-regional-orders.html" class="h3">
+                    China's perspective on world and regional orders
+                  </a>
                 </h3>
-
                 <p class="blog-text">
-                  The quality of the tools you use defines the speed with which you can diagnose and resolve problems.
-                  Each year the landscape changes dramatically in web technologies, and of late the tooling for
-                  accessibility is no
-                  exception.
+                  With Steve Wood and Patricia Schneider, in Sicherheit und Frieden (2019). The article was supported by the DAAD Strategic Partnerships China Fund.
                 </p>
-
                 <div class="wrapper-flex">
-
                   <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
+                    <img src="./assets/images/profile.png" alt="" width="50">
                   </div>
-
                   <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
+                    <a href="./about.html" class="h4">Fanglu Sun</a>
                     <p class="text-sm">
-                      <time datetime="2021-09-13">Sep 13, 2021</time>
+                      <time datetime="2019-12-01">Dec 1, 2019</time>
                       <span class="separator"></span>
                       <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT7M">7 min</time>
+                      <time datetime="PT3M">3 min</time>
                     </p>
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
-
-            <div class="blog-card">
-
+            <div class="blog-card" data-topic="organizations">
               <div class="blog-card-banner">
-                <img src="./assets/images/blog-10.png"
-                  alt="How to connect a React frontend with a NodeJS/Express backend" width="250"
-                  class="blog-banner-img">
+                <img src="./assets/images/banner-peacekeeping.svg" alt="" width="250" class="blog-banner-img">
               </div>
-
               <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Database</button>
-
-                <h3><a href="" class="h3">How to connect a React frontend with a NodeJS/Express backend</a></h3>
-
+                <button class="blog-topic text-tiny" data-filter="organizations">International Organizations</button>
+                <h3>
+                  <a href="./posts/peacekeeping-public-support.html" class="h3">
+                    Gauging Chinese public support for China's role in peacekeeping
+                  </a>
+                </h3>
                 <p class="blog-text">
-                  The MERN (MongoDB, Express, React, NodeJS) stack is very popular for making full stack applications,
-                  utilizing
-                  Javascript for both the backend and frontend as well as a document-oriented or non relational database
-                  (MongoDB),
-                  meaning that it's structured like JSON rather than a large excel sheet like SQL databases are.
+                  With Songying Fang, in the Chinese Journal of International Politics (2019). A companion piece traces China's evolving motivations and goals in UN peacekeeping.
                 </p>
-
                 <div class="wrapper-flex">
-
                   <div class="profile-wrapper">
-                    <img src="./assets/images/author.png" alt="Julia walker" width="50">
+                    <img src="./assets/images/profile.png" alt="" width="50">
                   </div>
-
                   <div class="wrapper">
-                    <a href="#" class="h4">Julia Walker</a>
-
+                    <a href="./about.html" class="h4">Fanglu Sun</a>
                     <p class="text-sm">
-                      <time datetime="2021-09-21">Sep 21, 2021</time>
+                      <time datetime="2019-11-01">Nov 1, 2019</time>
                       <span class="separator"></span>
                       <ion-icon name="time-outline"></ion-icon>
                       <time datetime="PT4M">4 min</time>
                     </p>
                   </div>
-
                 </div>
-
               </div>
-
             </div>
 
           </div>
-
-          <button class="btn load-more">Load More</button>
-
         </div>
 
-
-
-
-
-        <!--
-          - ASIDE
-        -->
-
         <div class="aside">
-
           <div class="topics">
-
             <h2 class="h2">Topics</h2>
-
-            <a href="#" class="topic-btn">
-              <div class="icon-box">
-                <ion-icon name="server-outline"></ion-icon>
-              </div>
-
-              <p>Database</p>
-            </a>
-
-            <a href="#" class="topic-btn">
-              <div class="icon-box">
-                <ion-icon name="accessibility-outline"></ion-icon>
-              </div>
-
-              <p>Accessibility</p>
-            </a>
-
-            <a href="#" class="topic-btn">
-              <div class="icon-box">
-                <ion-icon name="rocket-outline"></ion-icon>
-              </div>
-
-              <p>Web Performance</p>
-            </a>
-
+            <button class="topic-btn" data-filter="all">
+              <div class="icon-box"><ion-icon name="albums-outline"></ion-icon></div>
+              <p>All notes</p>
+            </button>
+            <button class="topic-btn" data-filter="organizations">
+              <div class="icon-box"><ion-icon name="business-outline"></ion-icon></div>
+              <p>International Organizations</p>
+            </button>
+            <button class="topic-btn" data-filter="south">
+              <div class="icon-box"><ion-icon name="earth-outline"></ion-icon></div>
+              <p>Global South</p>
+            </button>
+            <button class="topic-btn" data-filter="china">
+              <div class="icon-box"><ion-icon name="flag-outline"></ion-icon></div>
+              <p>Chinese Foreign Policy</p>
+            </button>
+            <button class="topic-btn" data-filter="methods">
+              <div class="icon-box"><ion-icon name="stats-chart-outline"></ion-icon></div>
+              <p>Methods</p>
+            </button>
           </div>
 
           <div class="tags">
-
             <h2 class="h2">Tags</h2>
-
             <div class="wrapper">
-
-              <button class="hashtag">#mongodb</button>
-              <button class="hashtag">#nodejs</button>
-              <button class="hashtag">#a11y</button>
-              <button class="hashtag">#mobility</button>
-              <button class="hashtag">#inclusion</button>
-              <button class="hashtag">#webperf</button>
-              <button class="hashtag">#optimize</button>
-              <button class="hashtag">#performance</button>
-
+              <span class="hashtag">#UN</span>
+              <span class="hashtag">#GlobalSouth</span>
+              <span class="hashtag">#G77</span>
+              <span class="hashtag">#Peacekeeping</span>
+              <span class="hashtag">#China</span>
+              <span class="hashtag">#ForeignPolicy</span>
+              <span class="hashtag">#Methods</span>
+              <span class="hashtag">#SecurityCouncil</span>
             </div>
-
           </div>
 
           <div class="contact">
-
-            <h2 class="h2">Let's Talk</h2>
-
+            <h2 class="h2">Elsewhere</h2>
             <div class="wrapper">
-
               <p>
-                Do you want to learn more about how I can help your company overcome problems? Let us have a
-                conversation.
+                The full CV, publications, and teaching record are on the academic site. Write to Fanglu.Sun@xjtlu.edu.cn.
               </p>
-
               <ul class="social-link">
-
                 <li>
-                  <a href="#" class="icon-box discord">
-                    <ion-icon name="logo-discord"></ion-icon>
+                  <a href="mailto:Fanglu.Sun@xjtlu.edu.cn" class="icon-box" aria-label="Email">
+                    <ion-icon name="mail-outline"></ion-icon>
                   </a>
                 </li>
-
                 <li>
-                  <a href="#" class="icon-box twitter">
-                    <ion-icon name="logo-twitter"></ion-icon>
+                  <a href="https://sunfanglu.github.io/" class="icon-box" aria-label="Academic website">
+                    <ion-icon name="globe-outline"></ion-icon>
                   </a>
                 </li>
-
                 <li>
-                  <a href="#" class="icon-box facebook">
-                    <ion-icon name="logo-facebook"></ion-icon>
+                  <a href="https://scholar.google.com/citations?user=9LArnEkAAAAJ" class="icon-box" aria-label="Google Scholar">
+                    <ion-icon name="school-outline"></ion-icon>
                   </a>
                 </li>
-
               </ul>
-
             </div>
-
           </div>
 
           <div class="newsletter">
-
-            <h2 class="h2">Newsletter</h2>
-
+            <h2 class="h2">Record</h2>
             <div class="wrapper">
-
-              <p>
-                Subscribe to our newsletter to be among the first to keep up with the latest updates.
-              </p>
-
-              <form action="#">
-                <input type="email" name="email" placeholder="Email Address" required>
-
-                <button type="submit" class="btn btn-primary">Subscribe</button>
-              </form>
-
+              <p>Positions, talks, grants, and the full publication list.</p>
+              <a href="https://sunfanglu.github.io/cv/" class="btn btn-primary">Open the CV</a>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </main>
 
-
-
-
-
-  <!--
-    - #FOOTER
-  -->
-
   <footer>
-
     <div class="container">
-
       <div class="wrapper">
-
-        <a href="#" class="footer-logo">
-          <img src="./assets/images/logo-light.svg" alt="SimpleBlog Logo" width="150" class="logo-light">
-          <img src="./assets/images/logo-dark.svg" alt="SimpleBlog Logo" width="150" class="logo-dark">
-        </a>
-
+        <a href="./index.html" class="footer-logo site-logo">Fanglu Sun</a>
         <p class="footer-text">
-          Learn about Web accessibility, Web performance, and Database management.
+          Research notes on methods, Chinese foreign policy, the Global South, and international organizations.
         </p>
-
       </div>
-
       <div class="wrapper">
-
-        <p class="footer-title">Quick Links</p>
-
+        <p class="footer-title">This site</p>
         <ul>
-
-          <li>
-            <a href="#" class="footer-link">Advertise with us</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">About Us</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">Contact Us</a>
-          </li>
-
+          <li><a href="./index.html" class="footer-link">Home</a></li>
+          <li><a href="./about.html" class="footer-link">About</a></li>
+          <li><a href="./contact.html" class="footer-link">Contact</a></li>
         </ul>
-
       </div>
-
       <div class="wrapper">
-
-        <p class="footer-title">Legal Stuff</p>
-
+        <p class="footer-title">Academic site</p>
         <ul>
-
-          <li>
-            <a href="#" class="footer-link">Privacy Notice</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">Cookie Policy</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">Terms Of Use</a>
-          </li>
-
+          <li><a href="https://sunfanglu.github.io/publications/" class="footer-link">Publications</a></li>
+          <li><a href="https://sunfanglu.github.io/talks/" class="footer-link">Talks</a></li>
+          <li><a href="https://sunfanglu.github.io/teaching/" class="footer-link">Teaching</a></li>
+          <li><a href="https://sunfanglu.github.io/zh/" class="footer-link">中文主页</a></li>
         </ul>
-
       </div>
-
     </div>
-
     <p class="copyright">
-      &copy; Copyright 2024 <a href="#">SimpleBlog</a>
+      &copy; 2026 <a href="https://sunfanglu.github.io/">Fanglu Sun</a>
     </p>
-
   </footer>
 
-
-
-
-
-  <!--
-    - custom js link
-  -->
   <script src="./assets/js/script.js"></script>
-
-  <!--
-    - ionicon link
-  -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
