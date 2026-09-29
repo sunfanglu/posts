@@ -34,8 +34,10 @@ const cards = document.querySelectorAll('.blog-card');
 const filterButtons = document.querySelectorAll('[data-filter]');
 
 function applyFilter(topic) {
+  // 主题按钮按 data-topic，标签按 data-tags，两者都能筛出对应文章
   cards.forEach(function (card) {
-    const match = topic === 'all' || card.dataset.topic === topic;
+    const tags = (card.dataset.tags || '').split(/\s+/);
+    const match = topic === 'all' || card.dataset.topic === topic || tags.indexOf(topic) !== -1;
     card.hidden = !match;
   });
 

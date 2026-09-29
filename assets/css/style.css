@@ -985,7 +985,8 @@ footer .wrapper { text-align: center; }
     border-radius: 5px;
   }
 
-  .tags .hashtag:hover {
+  .tags .hashtag:hover,
+  .tags .hashtag.is-active {
     background: var(--foreground-secondary);
     color: var(--action-primary);
   }

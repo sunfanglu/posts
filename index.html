@@ -8,7 +8,7 @@
   <title>Fanglu Sun — Research Notes</title>
   <meta name="description" content="Research notes by Fanglu Sun, Assistant Professor of International Studies at Xi'an Jiaotong-Liverpool University.">
   <link rel="icon" href="./assets/images/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/style.css?v=20260929d">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
@@ -110,9 +110,7 @@
           <h2 class="h2">Latest writing</h2>
           <div class="blog-card-group">
 
-            <div class="blog-card" data-topic="organizations">
-              <div class="blog-card-banner">
-                <img src="./assets/images/banner-unga81.jpg" alt="The 81st UNGA General Debate" width="250" class="blog-banner-img">
+            <div class="blog-card" data-topic="organizations" data-tags="un">
               </div>
               <div class="blog-content-wrapper">
                 <button class="blog-topic text-tiny" data-filter="organizations">International Organizations</button>
@@ -141,7 +139,7 @@
               </div>
             </div>
 
-            <div class="blog-card" data-topic="south">
+            <div class="blog-card" data-topic="south" data-tags="un global-south">
               <div class="blog-card-banner">
                 <img src="./assets/images/banner-walkout.jpg" alt="Delegates leaving the General Assembly hall during Netanyahu’s speech" width="250" class="blog-banner-img">
               </div>
@@ -172,7 +170,7 @@
               </div>
             </div>
 
-            <div class="blog-card" data-topic="organizations">
+            <div class="blog-card" data-topic="organizations" data-tags="un security-council">
               <div class="blog-card-banner">
                 <!-- 安理会会议照片横幅，标题已经写在图片上 -->
                 <img src="./assets/images/banner-council.jpg" alt="UNSC 10228 Meeting" width="250" class="blog-banner-img">
@@ -204,7 +202,7 @@
               </div>
             </div>
 
-            <div class="blog-card" data-topic="south">
+            <div class="blog-card" data-topic="south" data-tags="un global-south g77">
               <div class="blog-card-banner">
                 <img src="./assets/images/banner-south.jpg" alt="Hands holding up a globe" width="250" class="blog-banner-img">
               </div>
@@ -235,7 +233,7 @@
               </div>
             </div>
 
-            <div class="blog-card" data-topic="methods">
+            <div class="blog-card" data-topic="methods" data-tags="big-data">
               <div class="blog-card-banner">
                 <img src="./assets/images/banner-methods.jpg" alt="Research Method" width="250" class="blog-banner-img">
               </div>
@@ -266,7 +264,7 @@
               </div>
             </div>
 
-            <div class="blog-card" data-topic="china">
+            <div class="blog-card" data-topic="china" data-tags="china foreign-policy">
               <div class="blog-card-banner">
                 <img src="./assets/images/banner-populism.jpg" alt="Populism" width="250" class="blog-banner-img">
               </div>
@@ -297,7 +295,7 @@
               </div>
             </div>
 
-            <div class="blog-card" data-topic="china">
+            <div class="blog-card" data-topic="china" data-tags="china foreign-policy">
               <div class="blog-card-banner">
                 <img src="./assets/images/banner-orders.jpg" alt="World reordering" width="250" class="blog-banner-img">
               </div>
@@ -328,7 +326,7 @@
               </div>
             </div>
 
-            <div class="blog-card" data-topic="organizations">
+            <div class="blog-card" data-topic="organizations" data-tags="un peacekeeping china">
               <div class="blog-card-banner">
                 <img src="./assets/images/banner-peacekeeping.png" alt="UN peacekeeping helmet" width="250" class="blog-banner-img">
               </div>
@@ -390,14 +388,14 @@
           <div class="tags">
             <h2 class="h2">Tags</h2>
             <div class="wrapper">
-              <span class="hashtag">#UN</span>
-              <span class="hashtag">#GlobalSouth</span>
-              <span class="hashtag">#G77</span>
-              <span class="hashtag">#Peacekeeping</span>
-              <span class="hashtag">#China</span>
-              <span class="hashtag">#ForeignPolicy</span>
-              <span class="hashtag">#BigData</span>
-              <span class="hashtag">#SecurityCouncil</span>
+              <button class="hashtag" type="button" data-filter="un">#UN</button>
+              <button class="hashtag" type="button" data-filter="global-south">#GlobalSouth</button>
+              <button class="hashtag" type="button" data-filter="g77">#G77</button>
+              <button class="hashtag" type="button" data-filter="peacekeeping">#Peacekeeping</button>
+              <button class="hashtag" type="button" data-filter="china">#China</button>
+              <button class="hashtag" type="button" data-filter="foreign-policy">#ForeignPolicy</button>
+              <button class="hashtag" type="button" data-filter="big-data">#BigData</button>
+              <button class="hashtag" type="button" data-filter="security-council">#SecurityCouncil</button>
             </div>
           </div>
 
@@ -470,7 +468,7 @@
     </p>
   </footer>
 
-  <script src="./assets/js/script.js"></script>
+  <script src="./assets/js/script.js?v=20260929d"></script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
