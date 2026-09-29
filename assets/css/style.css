@@ -1184,3 +1184,72 @@ button.nav-link { text-align: left; }
   margin: 0;
   padding: 0.85rem 1rem;
 }
+
+/* 研究笔记里的统计、表格和方法说明 */
+.article h3 {
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.6rem;
+}
+
+.article .stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+}
+
+.article .stat {
+  background: var(--background-secondary);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+
+.article .stat b {
+  display: block;
+  color: var(--foreground-primary);
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.article .method {
+  color: var(--foreground-tertiary);
+  font-size: var(--fs-5);
+  margin: -0.25rem 0 1.5rem;
+}
+
+.article .table-wrap {
+  overflow-x: auto;
+  margin: 0 0 0.6rem;
+  border: 1px solid var(--action-primary);
+  border-radius: 10px;
+}
+
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.article th,
+.article td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--action-primary);
+  color: var(--foreground-secondary);
+}
+
+.article th {
+  color: var(--foreground-tertiary);
+  font-size: var(--fs-5);
+  font-weight: 700;
+}
+
+.article tr:last-child td { border-bottom: 0; }
+
+.article td.num,
+.article th.num { text-align: right; white-space: nowrap; }
+
+@media (max-width: 700px) {
+  .article .stats { grid-template-columns: 1fr; }
+}
