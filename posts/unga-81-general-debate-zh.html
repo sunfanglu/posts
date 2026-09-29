@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>从发言文本看第81届联大一般性辩论 — 孙芳露</title>
+  <meta name="description" content="对第81届联大一般性辩论194篇主旨发言和27篇补充发言的文本分析。">
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260929">
+  <style>
+    /* 条形图写在本页，避免沿用旧样式时只剩文字 */
+    .briefing .bars { display: grid; gap: 8px; width: 100%; }
+    .briefing .barrow {
+      display: grid;
+      grid-template-columns: minmax(7.5rem, 16rem) minmax(4rem, 1fr) 4.2rem;
+      gap: 12px;
+      align-items: center;
+    }
+    .briefing .barrow .lab { display: block; text-align: right; line-height: 1.3; }
+    .briefing .track {
+      display: block;
+      height: 18px;
+      background: #edf2f5;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .briefing .fill { display: block; height: 18px; border-radius: 3px; }
+    .briefing .barrow b { display: block; text-align: right; font-variant-numeric: tabular-nums; }
+    @media (max-width: 720px) {
+      .briefing .barrow { grid-template-columns: 6.2rem minmax(3rem, 1fr) 3.4rem; gap: 8px; font-size: 13px; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="light-theme">
+  <header>
+    <div class="container">
+      <nav class="navbar">
+        <a href="../index.html" class="site-logo">Fanglu Sun</a>
+        <div class="btn-group">
+          <button class="theme-btn theme-btn-mobile light" aria-label="切换颜色">
+            <ion-icon name="moon" class="moon"></ion-icon>
+            <ion-icon name="sunny" class="sun"></ion-icon>
+          </button>
+          <button class="nav-menu-btn" aria-label="打开菜单"><ion-icon name="menu-outline"></ion-icon></button>
+        </div>
+        <div class="flex-wrapper">
+          <ul class="desktop-nav">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../about.html" class="nav-link">About</a></li>
+            <li><a href="../contact.html" class="nav-link">Contact</a></li>
+            <li><a href="https://sunfanglu.github.io/zh/" class="nav-link">学术主页</a></li>
+          </ul>
+          <button class="theme-btn theme-btn-desktop light" aria-label="切换颜色">
+            <ion-icon name="moon" class="moon"></ion-icon>
+            <ion-icon name="sunny" class="sun"></ion-icon>
+          </button>
+        </div>
+        <div class="mobile-nav">
+          <button class="nav-close-btn" aria-label="关闭菜单"><ion-icon name="close-outline"></ion-icon></button>
+          <div class="wrapper">
+            <p class="h3 nav-title">菜单</p>
+            <ul>
+              <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
+              <li class="nav-item"><a href="../about.html" class="nav-link">About</a></li>
+              <li class="nav-item"><a href="../contact.html" class="nav-link">Contact</a></li>
+              <li class="nav-item"><a href="https://sunfanglu.github.io/zh/" class="nav-link">学术主页</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main class="article briefing">
+    <div class="container">
+      <p class="kicker">国际组织中的南方国家</p>
+      <h1 class="h1">从发言文本看第81届联大一般性辩论：共同议程、国家差异与外交争论</h1>
+      <p class="meta"><time datetime="2026-09-29">2026年9月29日</time> · 孙芳露 · 研究稿 · <a href="./unga-81-general-debate.html">English</a></p>
+
+      <figure>
+        <img src="../assets/images/banner-unga81.jpg" alt="The 81st UNGA General Debate">
+        <figcaption>第81届联大一般性辩论，纽约联合国总部，2026年9月22日至28日。</figcaption>
+      </figure>
+
+      <p class="lead">
+        第81届联大一般性辩论以“重建信任，管理变革：一个为所有人带来实效的联合国”为主题。对各国主旨发言的文本分析显示：国际法与主权、气候、中东和联合国改革既是跨地区议题，也是各国阐述自身处境的不同入口。国家之间相互提及则使一般性辩论呈现另一面景象：共同的多边会场里，存在多个高度具体、互不相同的双边与地区争议。
+      </p>
+
+      <div class="stats" aria-label="语料规模">
+        <div class="stat"><b>194</b><span>篇主旨发言</span></div>
+        <div class="stat"><b>27</b><span>篇补充发言</span></div>
+        <div class="stat"><b>9月22—28日</b><span>纽约，一般性辩论</span></div>
+      </div>
+
+      <p class="note">
+        词频衡量措辞出现次数。主题的“国家占比”实际是194个发言方中至少有一句命中该主题的比例。相似度仅表示用词相近。提及次数表示点名的频率，不能直接解释为赞同或批评。“194”和“27”指发言篇数；发言方包含欧盟、巴勒斯坦等，不能理解为联合国会员国或主权国家。
+      </p>
+
+      <h2>一、分析范围与会议背景</h2>
+      <p>
+        联合国大会由联合国会员国共同组成，是联合国主要的审议、监督和审查机构。本届一般性辩论于9月22日至28日在纽约联合国总部举行。同期还举办了气候行动和公正转型、纪念《发展权利宣言》通过40周年、应对海平面上升的生存威胁、大流行病防范与应对、纪念《德班宣言和行动纲领》通过25周年等高级别会议。下文的统计只针对一般性辩论发言，不考虑同期专题会议讲话。
+      </p>
+      <p>
+        分析的语料包括194篇主旨发言和27篇补充发言。第一至第四部分严格只用主旨发言；第五部分讨论主旨发言中的点名；第六部分单列补充发言。秘书长和大会主席的讲话均不计入本文的分析。
+      </p>
+
+      <h2>二、总体在谈什么：安全、发展与制度语言</h2>
+      <p>
+        观察主旨发言中已单独列出的代表性高频实词，“安全”出现1470次，“发展”1139次，“全球”844次，“信任”703次，“气候”653次，“合作”614次。这些词显示，本届辩论并非围绕单一危机展开：安全与发展仍是最常用的共同语言，信任、机构、合作则反映了对联合国作用的持续讨论。
+      </p>
+      <figure>
+        <div class="chart-title">主旨发言中的代表性高频词（出现次数）</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">安全</span><div class="track"><div class="fill" style="width:100%;background:#155a79"></div></div><b>1470</b></div>
+          <div class="barrow"><span class="lab">发展</span><div class="track"><div class="fill" style="width:77.5%;background:#155a79"></div></div><b>1139</b></div>
+          <div class="barrow"><span class="lab">全球</span><div class="track"><div class="fill" style="width:57.4%;background:#155a79"></div></div><b>844</b></div>
+          <div class="barrow"><span class="lab">信任</span><div class="track"><div class="fill" style="width:47.8%;background:#155a79"></div></div><b>703</b></div>
+          <div class="barrow"><span class="lab">气候</span><div class="track"><div class="fill" style="width:44.4%;background:#155a79"></div></div><b>653</b></div>
+          <div class="barrow"><span class="lab">未来</span><div class="track"><div class="fill" style="width:42.7%;background:#155a79"></div></div><b>628</b></div>
+          <div class="barrow"><span class="lab">合作</span><div class="track"><div class="fill" style="width:41.8%;background:#155a79"></div></div><b>614</b></div>
+          <div class="barrow"><span class="lab">机构</span><div class="track"><div class="fill" style="width:34.2%;background:#155a79"></div></div><b>503</b></div>
+          <div class="barrow"><span class="lab">经济</span><div class="track"><div class="fill" style="width:33.1%;background:#155a79"></div></div><b>486</b></div>
+          <div class="barrow"><span class="lab">能源</span><div class="track"><div class="fill" style="width:27.9%;background:#155a79"></div></div><b>410</b></div>
+        </div>
+        <figcaption><strong>方法。</strong>提取主旨发言的实际词频，选取其中十个能表达主要议程的实词，去除常见停用词与礼仪套话。此图为代表性词项，并非完整词频排行榜。条长按本组最大值缩放。</figcaption>
+      </figure>
+      <figure>
+        <img src="../assets/images/unga81-zh-wordcloud.png" alt="主旨发言高频词词云，安全、和平、发展最大">
+        <figcaption>主旨发言中的常见词。词越大，出现越多。词云显示的是可见程度，不是相同的政治含义。</figcaption>
+      </figure>
+      <p>
+        高频词只反映议题的可见程度，不能说明各国对同一个词赋予相同含义。这些共同词汇的政治含义需要结合上下文判断。同样谈“安全”，有人讨论武力冲突与边界，有人讨论气候风险与粮食；同样谈“发展”，有人强调融资和债务，有人强调技术与能源转型。
+      </p>
+
+      <h2>三、哪些国家发言相似：共同问题不等于共同立场</h2>
+      <p>
+        按各段主旨发言的词频计算 TF–IDF，再比较余弦相似度，若干接近组合包括巴勒斯坦—约旦（0.25）、朝鲜—韩国（0.23）、南非—南苏丹（0.20）；美国—以色列和以色列—伊朗均为0.17，乌克兰—俄罗斯为0.16。相似值总体不高，说明一般性辩论中的共同外交词汇并未抹去各国讲话的差异。
+      </p>
+      <figure>
+        <img src="../assets/images/unga81-zh-similarity.png" alt="部分发言方主旨发言的余弦相似度热图">
+        <figcaption><strong>方法。</strong>按词项 TF–IDF 向量计算两两余弦相似度。颜色越深表示用词越相似，对角线为同一文本与自身比较。</figcaption>
+      </figure>
+      <p>
+        尤其需要区分“讨论同一对象”和“持相同立场”。乌克兰与俄罗斯、以色列与伊朗、朝鲜与韩国相互谈及相同争端，词汇因此可能接近，却不能据此推断政策一致。
+      </p>
+      <figure>
+        <div class="chart-title">词项最接近的三个发言方</div>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>发言方</th><th>词项最接近的三个发言方（余弦值）</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>美国</td><td>以色列（0.17）；乌克兰（0.14）；俄罗斯（0.12）</td></tr>
+              <tr><td>中国</td><td>尼加拉瓜（0.11）；捷克（0.09）；哈萨克斯坦（0.08）</td></tr>
+              <tr><td>俄罗斯</td><td>乌克兰（0.16）；白俄罗斯（0.15）；美国（0.12）</td></tr>
+              <tr><td>乌克兰</td><td>俄罗斯（0.16）；美国（0.14）；摩尔多瓦（0.13）</td></tr>
+              <tr><td>以色列</td><td>伊朗（0.17）；美国（0.17）；约旦（0.12）</td></tr>
+              <tr><td>巴勒斯坦</td><td>约旦（0.25）；卡塔尔（0.17）；埃及（0.16）</td></tr>
+              <tr><td>伊朗</td><td>以色列（0.17）；美国（0.12）；欧盟（0.09）</td></tr>
+              <tr><td>朝鲜</td><td>韩国（0.23）；日本（0.15）；乌克兰（0.07）</td></tr>
+              <tr><td>韩国</td><td>朝鲜（0.23）；东帝汶（0.12）；日本（0.10）</td></tr>
+              <tr><td>巴西</td><td>南非（0.12）；欧盟（0.09）；加纳（0.09）</td></tr>
+              <tr><td>南非</td><td>南苏丹（0.20）；安哥拉（0.14）；肯尼亚（0.13）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figcaption><strong>方法。</strong>表中分值是文本相似度，不是外交立场一致程度；仅列部分发言方以作参考。</figcaption>
+      </figure>
+
+      <h2>四、15个预设主题：议程有多广、重点落在何处</h2>
+      <p>
+        预先设定的15个议题覆盖国际法与主权、联合国改革、中东与巴勒斯坦、气候、人工智能、发展融资等。对21,312个主旨发言句子逐句用关键词规则编码后，国际法与主权命中977句，占全部句子的4.6%，覆盖180个发言方；气候命中765句，涉及153个发言方；中东与巴勒斯坦命中700句，涉及126个发言方；联合国改革命中660句，涉及163个发言方。句子占比普遍只有个位数，反映的是每一类在全部句子中的份额，不能据此认为其不重要：大量句子是礼仪、背景或难以由这15类覆盖的其他内容。
+      </p>
+      <figure>
+        <div class="chart-title">15个主题：命中主旨发言的句子占比</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">国际法与国家主权</span><div class="track"><div class="fill" style="width:100%;background:#155a79"></div></div><b>4.6%</b></div>
+          <div class="barrow"><span class="lab">气候行动、韧性与资金</span><div class="track"><div class="fill" style="width:78.3%;background:#155a79"></div></div><b>3.6%</b></div>
+          <div class="barrow"><span class="lab">中东冲突与巴勒斯坦问题</span><div class="track"><div class="fill" style="width:71.7%;background:#155a79"></div></div><b>3.3%</b></div>
+          <div class="barrow"><span class="lab">联合国改革与多边主义</span><div class="track"><div class="fill" style="width:67.4%;background:#155a79"></div></div><b>3.1%</b></div>
+          <div class="barrow"><span class="lab">非洲和平与安全</span><div class="track"><div class="fill" style="width:32.6%;background:#155a79"></div></div><b>1.5%</b></div>
+          <div class="barrow"><span class="lab">海事安全与海洋治理</span><div class="track"><div class="fill" style="width:30.4%;background:#155a79"></div></div><b>1.4%</b></div>
+          <div class="barrow"><span class="lab">人工智能与数字治理</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
+          <div class="barrow"><span class="lab">乌克兰战争</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
+          <div class="barrow"><span class="lab">恐怖主义与跨国犯罪</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
+          <div class="barrow"><span class="lab">发展融资、债务与SDG</span><div class="track"><div class="fill" style="width:23.9%;background:#155a79"></div></div><b>1.1%</b></div>
+          <div class="barrow"><span class="lab">冲突预防与建设和平</span><div class="track"><div class="fill" style="width:15.2%;background:#155a79"></div></div><b>0.7%</b></div>
+          <div class="barrow"><span class="lab">修复性正义与反种族主义</span><div class="track"><div class="fill" style="width:15.2%;background:#155a79"></div></div><b>0.7%</b></div>
+          <div class="barrow"><span class="lab">海地危机</span><div class="track"><div class="fill" style="width:13%;background:#155a79"></div></div><b>0.6%</b></div>
+          <div class="barrow"><span class="lab">对古巴制裁与封锁</span><div class="track"><div class="fill" style="width:13%;background:#155a79"></div></div><b>0.6%</b></div>
+          <div class="barrow"><span class="lab">核裁军</span><div class="track"><div class="fill" style="width:8.7%;background:#155a79"></div></div><b>0.4%</b></div>
+        </div>
+        <figcaption><strong>方法。</strong>以21,312句为分母，关键词词典逐句识别15个预设主题。一句可同时命中多个主题，也可不命中任何主题。条长按最大句子占比缩放，不是全部句子的互斥份额。</figcaption>
+      </figure>
+      <figure>
+        <div class="chart-title">15个主题：至少有一句涉及该主题的发言方占比</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">国际法与国家主权</span><div class="track"><div class="fill" style="width:100%;background:#b96b27"></div></div><b>92.8%</b></div>
+          <div class="barrow"><span class="lab">联合国改革与多边主义</span><div class="track"><div class="fill" style="width:90.5%;background:#b96b27"></div></div><b>84.0%</b></div>
+          <div class="barrow"><span class="lab">气候行动、韧性与资金</span><div class="track"><div class="fill" style="width:85%;background:#b96b27"></div></div><b>78.9%</b></div>
+          <div class="barrow"><span class="lab">中东冲突与巴勒斯坦问题</span><div class="track"><div class="fill" style="width:69.9%;background:#b96b27"></div></div><b>64.9%</b></div>
+          <div class="barrow"><span class="lab">人工智能与数字治理</span><div class="track"><div class="fill" style="width:68.9%;background:#b96b27"></div></div><b>63.9%</b></div>
+          <div class="barrow"><span class="lab">发展融资、债务与SDG</span><div class="track"><div class="fill" style="width:55%;background:#b96b27"></div></div><b>51.0%</b></div>
+          <div class="barrow"><span class="lab">恐怖主义与跨国犯罪</span><div class="track"><div class="fill" style="width:51.6%;background:#b96b27"></div></div><b>47.9%</b></div>
+          <div class="barrow"><span class="lab">海事安全与海洋治理</span><div class="track"><div class="fill" style="width:50%;background:#b96b27"></div></div><b>46.4%</b></div>
+          <div class="barrow"><span class="lab">非洲和平与安全</span><div class="track"><div class="fill" style="width:47.7%;background:#b96b27"></div></div><b>44.3%</b></div>
+          <div class="barrow"><span class="lab">冲突预防与建设和平</span><div class="track"><div class="fill" style="width:45.6%;background:#b96b27"></div></div><b>42.3%</b></div>
+          <div class="barrow"><span class="lab">乌克兰战争</span><div class="track"><div class="fill" style="width:43.9%;background:#b96b27"></div></div><b>40.7%</b></div>
+          <div class="barrow"><span class="lab">修复性正义与反种族主义</span><div class="track"><div class="fill" style="width:34.5%;background:#b96b27"></div></div><b>32.0%</b></div>
+          <div class="barrow"><span class="lab">对古巴制裁与封锁</span><div class="track"><div class="fill" style="width:26.1%;background:#b96b27"></div></div><b>24.2%</b></div>
+          <div class="barrow"><span class="lab">核裁军</span><div class="track"><div class="fill" style="width:24.5%;background:#b96b27"></div></div><b>22.7%</b></div>
+          <div class="barrow"><span class="lab">海地危机</span><div class="track"><div class="fill" style="width:16.1%;background:#b96b27"></div></div><b>14.9%</b></div>
+        </div>
+        <figcaption><strong>方法。</strong>以194篇主旨发言所对应的发言方为分母。只要该发言方至少有一句命中主题，即计入一次。欧盟、巴勒斯坦等也在分母中，因此使用“发言方”。条长按最大覆盖面缩放。</figcaption>
+      </figure>
+      <p>
+        两种比例展示的是不同的议程结构。联合国改革在163个发言方中至少出现一次，覆盖面达到84.0%，但其句子占比为3.1%；中东与巴勒斯坦议题覆盖面为64.9%，句子占比却略高（3.3%）。这表明“被多少发言方谈到”和“每段发言投入多少篇幅”不应混为一个指标。人工智能与数字治理覆盖124个发言方（63.9%），命中262句（1.2%）；它已经是广泛提及的新议程，但在长篇国家主旨发言中的篇幅仍相对有限。
+      </p>
+      <h3>各国的主题组合</h3>
+      <p>
+        某些议题具有鲜明的国家或地区聚集性。气候议题在图瓦卢主旨发言中的命中句占比为26%，密克罗尼西亚为22%，马绍尔群岛为18%；海洋议题在汤加为16%、帕劳为13%。中东与巴勒斯坦议题在巴勒斯坦为45%、约旦为25%、以色列为21%；非洲和平与安全在南苏丹为47%、苏丹为26%、索马里为25%。这说明发言方不仅在谈共同的联合国议程，也在将自身的生存、发展和安全处境放进议程之中。
+      </p>
+      <figure>
+        <div class="chart-title">各主题句子占比最高的五个发言方</div>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>预设主题</th><th>主旨发言中该主题句子占比最高的五个发言方</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>联合国改革</td><td>几内亚比绍（20%）；欧盟（19%）；印度尼西亚（13%）；乍得（12%）；利比里亚（11%）</td></tr>
+              <tr><td>乌克兰战争</td><td>乌克兰（13%）；爱沙尼亚（13%）；俄罗斯（12%）；罗马尼亚（11%）；立陶宛（10%）</td></tr>
+              <tr><td>人工智能</td><td>阿尔巴尼亚（13%）；欧盟（6%）；安哥拉（6%）；阿根廷（5%）；澳大利亚（5%）</td></tr>
+              <tr><td>中东与巴勒斯坦</td><td>巴勒斯坦（45%）；约旦（25%）；以色列（21%）；卡塔尔（16%）；毛里塔尼亚（14%）</td></tr>
+              <tr><td>气候</td><td>图瓦卢（26%）；密克罗尼西亚（22%）；马绍尔群岛（18%）；吉布提（17%）；汤加（16%）</td></tr>
+              <tr><td>发展融资与SDG</td><td>坦桑尼亚（10%）；马拉维（7%）；利比里亚（6%）；马达加斯加（6%）；纳米比亚（6%）</td></tr>
+              <tr><td>海洋治理</td><td>汤加（16%）；帕劳（13%）；图瓦卢（11%）；密克罗尼西亚（9%）；菲律宾（9%）</td></tr>
+              <tr><td>建设和平</td><td>土库曼斯坦（10%）；冈比亚（6%）；阿联酋（6%）；赤道几内亚（5%）；多哥（5%）</td></tr>
+              <tr><td>非洲和平安全</td><td>南苏丹（47%）；苏丹（26%）；索马里（25%）；布基纳法索（18%）；马里（9%）</td></tr>
+              <tr><td>海地</td><td>海地（29%）；多米尼加（10%）；圣卢西亚（10%）；格林纳达（6%）；特立尼达和多巴哥（5%）</td></tr>
+              <tr><td>恐怖主义</td><td>也门（13%）；马里（10%）；哥伦比亚（9%）；布基纳法索（8%）；伊朗（8%）</td></tr>
+              <tr><td>核裁军</td><td>哈萨克斯坦（6%）；日本（5%）；新西兰（5%）；保加利亚（4%）；南非（3%）</td></tr>
+              <tr><td>国际法与主权</td><td>阿曼（22%）；越南（17%）；科威特（16%）；塞舌尔（15%）；埃及（14%）</td></tr>
+              <tr><td>修复正义</td><td>加纳（5%）；纳米比亚（5%）；苏里南（5%）；布基纳法索（5%）；圣卢西亚（4%）</td></tr>
+              <tr><td>古巴制裁</td><td>古巴（32%）；尼加拉瓜（6%）；安哥拉（6%）；格林纳达（5%）；几内亚比绍（4%）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figcaption><strong>方法。</strong>逐句关键词编码后，以每个发言方自身的主旨发言句子数作分母，比较各主题在其发言中所占比例；仅列每个主题占比最高的五个发言方。</figcaption>
+      </figure>
+      <details>
+        <summary><strong>各发言方与15个主题的覆盖热图</strong></summary>
+        <div class="zoom">
+          <img src="../assets/images/unga81-zh-coverage-1.png" alt="发言方与15个主题覆盖热图，第一部分">
+          <img src="../assets/images/unga81-zh-coverage-2.png" alt="发言方与15个主题覆盖热图，第二部分">
+          <img src="../assets/images/unga81-zh-coverage-3.png" alt="发言方与15个主题覆盖热图，第三部分">
+          <img src="../assets/images/unga81-zh-coverage-4.png" alt="发言方与15个主题覆盖热图，第四部分">
+        </div>
+        <p class="method">原分析生成的194个发言方 × 15个预设主题覆盖图。各格为该发言方主旨发言中命中相应主题的句子比例。拆成四段只为便于阅读，数值未改。可在框内滚动查看。</p>
+      </details>
+
+      <h2>五、谁在提及谁：多边会场里的具体争议</h2>
+      <p>
+        在主旨发言中，最常被点名的对象是巴勒斯坦（269次、89个发言方提到）、乌克兰（240次、78个发言方）、俄罗斯（214次、55个发言方）、以色列（183次、73个发言方）、加沙（159次、70个发言方）、美国（137次、70个发言方）。这里巴勒斯坦、乌克兰等是被提及的对象，加沙则是地名节点；它们出现在同一图中，并不意味着政治或法律身份相同。
+      </p>
+      <figure>
+        <div class="chart-title">主旨发言中被提及最多的对象</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">巴勒斯坦</span><div class="track"><div class="fill" style="width:100%;background:#366b8e"></div></div><b>269</b></div>
+          <div class="barrow"><span class="lab">乌克兰</span><div class="track"><div class="fill" style="width:89.2%;background:#366b8e"></div></div><b>240</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:79.6%;background:#366b8e"></div></div><b>214</b></div>
+          <div class="barrow"><span class="lab">以色列</span><div class="track"><div class="fill" style="width:68%;background:#366b8e"></div></div><b>183</b></div>
+          <div class="barrow"><span class="lab">加沙</span><div class="track"><div class="fill" style="width:59.1%;background:#366b8e"></div></div><b>159</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:50.9%;background:#366b8e"></div></div><b>137</b></div>
+          <div class="barrow"><span class="lab">苏丹</span><div class="track"><div class="fill" style="width:46.1%;background:#366b8e"></div></div><b>124</b></div>
+          <div class="barrow"><span class="lab">伊朗</span><div class="track"><div class="fill" style="width:45.4%;background:#366b8e"></div></div><b>122</b></div>
+          <div class="barrow"><span class="lab">古巴</span><div class="track"><div class="fill" style="width:27.1%;background:#366b8e"></div></div><b>73</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:21.6%;background:#366b8e"></div></div><b>58</b></div>
+          <div class="barrow"><span class="lab">海地</span><div class="track"><div class="fill" style="width:21.6%;background:#366b8e"></div></div><b>58</b></div>
+          <div class="barrow"><span class="lab">西岸</span><div class="track"><div class="fill" style="width:20.4%;background:#366b8e"></div></div><b>55</b></div>
+        </div>
+        <figcaption><strong>方法。</strong>用国名及部分具有独立争端意义的地名别名词典识别主旨发言的提及，剔除发言方提及自己及较短名称造成的重叠匹配。条长表示提及总次数，不表示支持或批评。加沙、西岸等地名单列。</figcaption>
+      </figure>
+      <p>
+        在“发言方 → 对象”关系上：乌克兰提及俄罗斯48次，亚美尼亚提及阿塞拜疆30次，古巴提及美国21次，以色列提及伊朗19次，约旦提及以色列19次。把方向保留下来，可以看到议程在不同国家发言中是如何被组织的。例如，约旦既提及以色列，也提及巴勒斯坦；同一对象的高频提及，在不同发言人那里可能承载完全不同的意义。
+      </p>
+      <figure>
+        <div class="chart-title">主旨发言中的有向提及</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">乌克兰 → 俄罗斯</span><div class="track"><div class="fill" style="width:100%;background:#366b8e"></div></div><b>48</b></div>
+          <div class="barrow"><span class="lab">亚美尼亚 → 阿塞拜疆</span><div class="track"><div class="fill" style="width:62.5%;background:#366b8e"></div></div><b>30</b></div>
+          <div class="barrow"><span class="lab">古巴 → 美国</span><div class="track"><div class="fill" style="width:43.8%;background:#366b8e"></div></div><b>21</b></div>
+          <div class="barrow"><span class="lab">以色列 → 伊朗</span><div class="track"><div class="fill" style="width:39.6%;background:#366b8e"></div></div><b>19</b></div>
+          <div class="barrow"><span class="lab">约旦 → 以色列</span><div class="track"><div class="fill" style="width:39.6%;background:#366b8e"></div></div><b>19</b></div>
+          <div class="barrow"><span class="lab">巴拉圭 → 委内瑞拉</span><div class="track"><div class="fill" style="width:39.6%;background:#366b8e"></div></div><b>19</b></div>
+          <div class="barrow"><span class="lab">爱沙尼亚 → 乌克兰</span><div class="track"><div class="fill" style="width:37.5%;background:#366b8e"></div></div><b>18</b></div>
+          <div class="barrow"><span class="lab">美国 → 伊朗</span><div class="track"><div class="fill" style="width:35.4%;background:#366b8e"></div></div><b>17</b></div>
+          <div class="barrow"><span class="lab">巴勒斯坦 → 以色列</span><div class="track"><div class="fill" style="width:31.3%;background:#366b8e"></div></div><b>15</b></div>
+          <div class="barrow"><span class="lab">南苏丹 → 苏丹</span><div class="track"><div class="fill" style="width:27.1%;background:#366b8e"></div></div><b>13</b></div>
+          <div class="barrow"><span class="lab">约旦 → 巴勒斯坦</span><div class="track"><div class="fill" style="width:22.9%;background:#366b8e"></div></div><b>11</b></div>
+          <div class="barrow"><span class="lab">毛里塔尼亚 → 巴勒斯坦</span><div class="track"><div class="fill" style="width:22.9%;background:#366b8e"></div></div><b>11</b></div>
+        </div>
+        <figcaption><strong>方法。</strong>从主旨发言国名提及记录聚合有向边并按次数排序。“冲突”“法律/领土”是相邻上下文中是否出现相应词项的自动标记，两类可同时命中，不能当作立场判读。条长为提及次数。</figcaption>
+      </figure>
+      <figure>
+        <img src="../assets/images/unga81-zh-mentions.png" alt="主旨发言提及网络，显示提及六次及以上的联系">
+        <figcaption>主旨发言：提及6次及以上。节点为发言方和被提及对象。连线表示一方在另一方发言中出现至少六次，不表示赞同或批评。</figcaption>
+      </figure>
+      <p>
+        这一框架也有助于理解以色列总理内塔尼亚胡发言时部分代表离席的场景：离席是会场中的外交姿态，与在正式主旨发言中提及以色列、加沙或巴勒斯坦是两种不同数据。某国有没有离席、离席的具体原因，都不能由词频或提及网络推断；反过来，留下聆听也不等于支持其发言。英文笔记另行讨论<a href="./netanyahu-unga-walkout.html">这场退席能够说明什么、不能说明什么</a>。
+      </p>
+
+      <h2>六、补充发言：谁使用了、争论向何处集中</h2>
+      <p>
+        一般性辩论另有18个发言方留下27篇补充发言记录。日本有3篇；乍得、中国、朝鲜、伊朗、菲律宾、苏丹和阿联酋各有2篇；其余10个发言方各有1篇。值得说明的是：巴勒斯坦的一篇是观察员介绍阿巴斯的视频讲话，其余26篇为答辩权发言。
+      </p>
+      <figure>
+        <div class="chart-title">补充发言记录数：18个发言方，共27篇</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">日本</span><div class="track"><div class="fill" style="width:100%;background:#b96b27"></div></div><b>3</b></div>
+          <div class="barrow"><span class="lab">乍得</span><div class="track"><div class="fill" style="width:66.7%;background:#b96b27"></div></div><b>2</b></div>
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:66.7%;background:#b96b27"></div></div><b>2</b></div>
+          <div class="barrow"><span class="lab">朝鲜</span><div class="track"><div class="fill" style="width:66.7%;background:#b96b27"></div></div><b>2</b></div>
+          <div class="barrow"><span class="lab">伊朗</span><div class="track"><div class="fill" style="width:66.7%;background:#b96b27"></div></div><b>2</b></div>
+          <div class="barrow"><span class="lab">菲律宾</span><div class="track"><div class="fill" style="width:66.7%;background:#b96b27"></div></div><b>2</b></div>
+          <div class="barrow"><span class="lab">苏丹</span><div class="track"><div class="fill" style="width:66.7%;background:#b96b27"></div></div><b>2</b></div>
+          <div class="barrow"><span class="lab">阿联酋</span><div class="track"><div class="fill" style="width:66.7%;background:#b96b27"></div></div><b>2</b></div>
+          <div class="barrow"><span class="lab">阿根廷</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">布隆迪</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">危地马拉</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">印度</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">印度尼西亚</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">巴基斯坦</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">巴勒斯坦</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">卡塔尔</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">泰国</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+          <div class="barrow"><span class="lab">土耳其</span><div class="track"><div class="fill" style="width:33.3%;background:#b96b27"></div></div><b>1</b></div>
+        </div>
+        <figcaption><strong>方法。</strong>据18个发言方及各自的补充发言记录数绘制，合计27篇。巴勒斯坦1篇为视频讲话介绍，其余26篇为答辩权发言。不与主旨发言混算。</figcaption>
+      </figure>
+      <p>
+        单看补充发言文本的提及关系，日本被提及47次，苏丹31次，以色列20次，美国18次，中国15次。较强的定向关系包括朝鲜→日本25次、中国→日本22次、阿联酋→苏丹17次、伊朗→以色列14次、乍得→苏丹14次、泰国→柬埔寨13次。这与主旨发言的广泛议题格局形成差别：较短的补充发言往往围绕一个具体对象集中回应。
+      </p>
+      <figure>
+        <div class="chart-title">补充发言中的有向提及</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">朝鲜 → 日本</span><div class="track"><div class="fill" style="width:100%;background:#b96b27"></div></div><b>25</b></div>
+          <div class="barrow"><span class="lab">中国 → 日本</span><div class="track"><div class="fill" style="width:88%;background:#b96b27"></div></div><b>22</b></div>
+          <div class="barrow"><span class="lab">阿联酋 → 苏丹</span><div class="track"><div class="fill" style="width:68%;background:#b96b27"></div></div><b>17</b></div>
+          <div class="barrow"><span class="lab">伊朗 → 以色列</span><div class="track"><div class="fill" style="width:56%;background:#b96b27"></div></div><b>14</b></div>
+          <div class="barrow"><span class="lab">伊朗 → 美国</span><div class="track"><div class="fill" style="width:56%;background:#b96b27"></div></div><b>14</b></div>
+          <div class="barrow"><span class="lab">乍得 → 苏丹</span><div class="track"><div class="fill" style="width:56%;background:#b96b27"></div></div><b>14</b></div>
+          <div class="barrow"><span class="lab">泰国 → 柬埔寨</span><div class="track"><div class="fill" style="width:52%;background:#b96b27"></div></div><b>13</b></div>
+          <div class="barrow"><span class="lab">中国 → 菲律宾</span><div class="track"><div class="fill" style="width:48%;background:#b96b27"></div></div><b>12</b></div>
+          <div class="barrow"><span class="lab">巴基斯坦 → 印度</span><div class="track"><div class="fill" style="width:44%;background:#b96b27"></div></div><b>11</b></div>
+          <div class="barrow"><span class="lab">菲律宾 → 中国</span><div class="track"><div class="fill" style="width:44%;background:#b96b27"></div></div><b>11</b></div>
+          <div class="barrow"><span class="lab">印度 → 巴基斯坦</span><div class="track"><div class="fill" style="width:36%;background:#b96b27"></div></div><b>9</b></div>
+          <div class="barrow"><span class="lab">布隆迪 → 刚果（金）</span><div class="track"><div class="fill" style="width:32%;background:#b96b27"></div></div><b>8</b></div>
+        </div>
+        <figcaption><strong>方法。</strong>仅用补充发言，以同一国名词典识别提及并聚合有向关系，展示计数最高的12条边。这是附加观察，不进入主旨发言部分的提及网络统计。</figcaption>
+      </figure>
+      <figure>
+        <img src="../assets/images/unga81-zh-supplementary.png" alt="补充发言提及网络，显示提及两次及以上的联系">
+        <figcaption>补充发言：提及2次及以上。联系比主旨发言更集中，且不并入主旨发言的提及网络。</figcaption>
+      </figure>
+
+      <h2>结语：共同词汇之下的多重议程</h2>
+      <p>
+        本届一般性辩论显示了联合国大会的双重功能。一方面，“安全”“发展”“信任”等词构成各国可以共同使用的语言，国际法与联合国改革也跨越了多数发言。另一方面，气候风险对于海岛国家、战争对于直接当事方、区域安全对于非洲受冲突影响国家，具有不同的紧迫性。国家间点名的网络进一步表明，表面上统一的一场一般性辩论，实际上容纳了多条方向明确的争论线索。
+      </p>
+      <p class="note">
+        资料：作者自行收集的第81届联大一般性辩论的194篇主旨发言和27篇补充发言（26篇为答辩发言）。所有图表都是基于 R 语言进行文本分析的结果。
+      </p>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      <div class="wrapper">
+        <a href="../index.html" class="footer-logo site-logo">Fanglu Sun</a>
+        <p class="footer-text">研究方法、中国外交政策，以及国际组织中的南方国家。</p>
+      </div>
+      <div class="wrapper">
+        <p class="footer-title">本站</p>
+        <ul>
+          <li><a href="../index.html" class="footer-link">首页</a></li>
+          <li><a href="../about.html" class="footer-link">关于</a></li>
+          <li><a href="../contact.html" class="footer-link">联系</a></li>
+        </ul>
+      </div>
+      <div class="wrapper">
+        <p class="footer-title">学术主页</p>
+        <ul>
+          <li><a href="https://sunfanglu.github.io/zh/publications/" class="footer-link">论文</a></li>
+          <li><a href="https://sunfanglu.github.io/zh/talks/" class="footer-link">演讲</a></li>
+          <li><a href="./unga-81-general-debate.html" class="footer-link">英文版</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2026 <a href="https://sunfanglu.github.io/zh/">孙芳露</a></p>
+  </footer>
+  <script src="../assets/js/script.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
