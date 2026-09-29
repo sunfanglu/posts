@@ -1128,13 +1128,12 @@ button.nav-link { text-align: left; }
   margin-bottom: 1.75rem;
 }
 
-/* 文章标题下的中英文切换，单独一行，避免混在日期里看不清 */
-.article .lang-switch {
-  margin: -0.35rem 0 0.85rem;
+/* 语言链接跟在研究稿字样右边，并使用强调色，避免和日期混成同一种灰 */
+.article .meta a {
+  color: var(--accent);
   font-weight: 700;
+  margin-left: 0.15rem;
 }
-
-.article .lang-switch a { color: var(--accent); }
 
 .article p,
 .article li {
