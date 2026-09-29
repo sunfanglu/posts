@@ -757,7 +757,7 @@ footer .wrapper { text-align: center; }
    * REUSED STYLE 
    */
 
-  .container { max-width: 1150px; }
+  .container { max-width: 1400px; }
 
 
 
@@ -1108,7 +1108,7 @@ button.nav-link { text-align: left; }
 }
 
 /* 文章页与页眉同宽，不再单独收成窄栏 */
-.article .container { max-width: 1150px; }
+.article .container { max-width: 1400px; }
 
 .article h1 {
   line-height: 1.35;
