@@ -6,7 +6,30 @@
   <title>Reading the 81st UN General Debate through speeches — Fanglu Sun</title>
   <meta name="description" content="Text analysis of 194 main speeches and 27 supplementary statements at the 81st UN General Debate, 22–28 September 2026.">
   <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css?v=20260929">
+  <style>
+    /* 条形图写在本页，避免沿用旧样式时只剩文字 */
+    .briefing .bars { display: grid; gap: 8px; width: 100%; }
+    .briefing .barrow {
+      display: grid;
+      grid-template-columns: minmax(7.5rem, 16rem) minmax(4rem, 1fr) 4.2rem;
+      gap: 12px;
+      align-items: center;
+    }
+    .briefing .barrow .lab { display: block; text-align: right; line-height: 1.3; }
+    .briefing .track {
+      display: block;
+      height: 18px;
+      background: #edf2f5;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .briefing .fill { display: block; height: 18px; border-radius: 3px; }
+    .briefing .barrow b { display: block; text-align: right; font-variant-numeric: tabular-nums; }
+    @media (max-width: 720px) {
+      .briefing .barrow { grid-template-columns: 6.2rem minmax(3rem, 1fr) 3.4rem; gap: 8px; font-size: 13px; }
+    }
+  </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body class="light-theme">
@@ -253,33 +276,21 @@
       </p>
       <figure>
         <div class="chart-title">Directed mentions in main speeches</div>
-        <div class="scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Speaker → mentioned object</th>
-              <th class="num">Mentions</th>
-              <th class="num">Nearby conflict terms</th>
-              <th class="num">Nearby law or territory terms</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Ukraine → Russia</td><td class="num">48</td><td class="num">17</td><td class="num">3</td></tr>
-            <tr><td>Armenia → Azerbaijan</td><td class="num">30</td><td class="num">0</td><td class="num">7</td></tr>
-            <tr><td>Cuba → United States</td><td class="num">21</td><td class="num">4</td><td class="num">2</td></tr>
-            <tr><td>Israel → Iran</td><td class="num">19</td><td class="num">5</td><td class="num">0</td></tr>
-            <tr><td>Jordan → Israel</td><td class="num">19</td><td class="num">7</td><td class="num">2</td></tr>
-            <tr><td>Paraguay → Venezuela</td><td class="num">19</td><td class="num">5</td><td class="num">2</td></tr>
-            <tr><td>Estonia → Ukraine</td><td class="num">18</td><td class="num">7</td><td class="num">4</td></tr>
-            <tr><td>United States → Iran</td><td class="num">17</td><td class="num">12</td><td class="num">1</td></tr>
-            <tr><td>Palestine → Israel</td><td class="num">15</td><td class="num">8</td><td class="num">2</td></tr>
-            <tr><td>South Sudan → Sudan</td><td class="num">13</td><td class="num">0</td><td class="num">2</td></tr>
-            <tr><td>Jordan → Palestine</td><td class="num">11</td><td class="num">4</td><td class="num">2</td></tr>
-            <tr><td>Mauritania → Palestine</td><td class="num">11</td><td class="num">0</td><td class="num">2</td></tr>
-          </tbody>
-        </table>
-      </div>
-        <figcaption><strong>Method.</strong> Directed edges aggregated from country-name mentions in main speeches and ranked by frequency. “Conflict” and “law/territory” are automatic flags for nearby terms. Both can be flagged for the same edge, and neither is a verdict on position.</figcaption>
+        <div class="bars">
+          <div class="barrow"><span class="lab">Ukraine → Russia</span><div class="track"><div class="fill" style="width:100%;background:#366b8e"></div></div><b>48</b></div>
+          <div class="barrow"><span class="lab">Armenia → Azerbaijan</span><div class="track"><div class="fill" style="width:62.5%;background:#366b8e"></div></div><b>30</b></div>
+          <div class="barrow"><span class="lab">Cuba → United States</span><div class="track"><div class="fill" style="width:43.8%;background:#366b8e"></div></div><b>21</b></div>
+          <div class="barrow"><span class="lab">Israel → Iran</span><div class="track"><div class="fill" style="width:39.6%;background:#366b8e"></div></div><b>19</b></div>
+          <div class="barrow"><span class="lab">Jordan → Israel</span><div class="track"><div class="fill" style="width:39.6%;background:#366b8e"></div></div><b>19</b></div>
+          <div class="barrow"><span class="lab">Paraguay → Venezuela</span><div class="track"><div class="fill" style="width:39.6%;background:#366b8e"></div></div><b>19</b></div>
+          <div class="barrow"><span class="lab">Estonia → Ukraine</span><div class="track"><div class="fill" style="width:37.5%;background:#366b8e"></div></div><b>18</b></div>
+          <div class="barrow"><span class="lab">United States → Iran</span><div class="track"><div class="fill" style="width:35.4%;background:#366b8e"></div></div><b>17</b></div>
+          <div class="barrow"><span class="lab">Palestine → Israel</span><div class="track"><div class="fill" style="width:31.3%;background:#366b8e"></div></div><b>15</b></div>
+          <div class="barrow"><span class="lab">South Sudan → Sudan</span><div class="track"><div class="fill" style="width:27.1%;background:#366b8e"></div></div><b>13</b></div>
+          <div class="barrow"><span class="lab">Jordan → Palestine</span><div class="track"><div class="fill" style="width:22.9%;background:#366b8e"></div></div><b>11</b></div>
+          <div class="barrow"><span class="lab">Mauritania → Palestine</span><div class="track"><div class="fill" style="width:22.9%;background:#366b8e"></div></div><b>11</b></div>
+        </div>
+        <figcaption><strong>Method.</strong> Directed edges from country-name mentions in main speeches, ranked by frequency. Bar length is the number of mentions. Nearby conflict or law-and-territory terms can be flagged automatically; those flags are not a verdict on position.</figcaption>
       </figure>
       <p>
         This framework also helps read the scene in which some delegates walked out during Benjamin Netanyahu’s speech. A walkout is a diplomatic gesture in the chamber. Mentions of Israel, Gaza or Palestine in formal main speeches are a different kind of data. Neither whether a delegation walked out, nor its specific reason, can be inferred from word frequencies or the mention network. Remaining to listen does not imply support for the speech. A separate note discusses <a href="./netanyahu-unga-walkout.html">what that walkout can and cannot tell us</a>.
@@ -318,27 +329,20 @@
       </p>
       <figure>
         <div class="chart-title">Directed mentions in supplementary statements</div>
-        <div class="scroll">
-        <table>
-          <thead>
-            <tr><th>Supplementary speaker → object</th><th class="num">Mentions</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Democratic People’s Republic of Korea → Japan</td><td class="num">25</td></tr>
-            <tr><td>China → Japan</td><td class="num">22</td></tr>
-            <tr><td>United Arab Emirates → Sudan</td><td class="num">17</td></tr>
-            <tr><td>Iran → Israel</td><td class="num">14</td></tr>
-            <tr><td>Iran → United States</td><td class="num">14</td></tr>
-            <tr><td>Chad → Sudan</td><td class="num">14</td></tr>
-            <tr><td>Thailand → Cambodia</td><td class="num">13</td></tr>
-            <tr><td>China → Philippines</td><td class="num">12</td></tr>
-            <tr><td>Pakistan → India</td><td class="num">11</td></tr>
-            <tr><td>Philippines → China</td><td class="num">11</td></tr>
-            <tr><td>India → Pakistan</td><td class="num">9</td></tr>
-            <tr><td>Burundi → DR Congo</td><td class="num">8</td></tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">DPR Korea → Japan</span><div class="track"><div class="fill" style="width:100%;background:#b96b27"></div></div><b>25</b></div>
+          <div class="barrow"><span class="lab">China → Japan</span><div class="track"><div class="fill" style="width:88%;background:#b96b27"></div></div><b>22</b></div>
+          <div class="barrow"><span class="lab">UAE → Sudan</span><div class="track"><div class="fill" style="width:68%;background:#b96b27"></div></div><b>17</b></div>
+          <div class="barrow"><span class="lab">Iran → Israel</span><div class="track"><div class="fill" style="width:56%;background:#b96b27"></div></div><b>14</b></div>
+          <div class="barrow"><span class="lab">Iran → United States</span><div class="track"><div class="fill" style="width:56%;background:#b96b27"></div></div><b>14</b></div>
+          <div class="barrow"><span class="lab">Chad → Sudan</span><div class="track"><div class="fill" style="width:56%;background:#b96b27"></div></div><b>14</b></div>
+          <div class="barrow"><span class="lab">Thailand → Cambodia</span><div class="track"><div class="fill" style="width:52%;background:#b96b27"></div></div><b>13</b></div>
+          <div class="barrow"><span class="lab">China → Philippines</span><div class="track"><div class="fill" style="width:48%;background:#b96b27"></div></div><b>12</b></div>
+          <div class="barrow"><span class="lab">Pakistan → India</span><div class="track"><div class="fill" style="width:44%;background:#b96b27"></div></div><b>11</b></div>
+          <div class="barrow"><span class="lab">Philippines → China</span><div class="track"><div class="fill" style="width:44%;background:#b96b27"></div></div><b>11</b></div>
+          <div class="barrow"><span class="lab">India → Pakistan</span><div class="track"><div class="fill" style="width:36%;background:#b96b27"></div></div><b>9</b></div>
+          <div class="barrow"><span class="lab">Burundi → DR Congo</span><div class="track"><div class="fill" style="width:32%;background:#b96b27"></div></div><b>8</b></div>
+        </div>
         <figcaption><strong>Method.</strong> Supplementary statements only, using the same country-name dictionary. The 12 highest-count edges are shown and are excluded from the main-speech mention network.</figcaption>
       </figure>
 
