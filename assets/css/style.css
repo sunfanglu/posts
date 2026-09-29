@@ -1150,3 +1150,36 @@ button.nav-link { text-align: left; }
   margin-top: 2rem;
   padding: 1rem 1.25rem;
 }
+
+/* 文章配图和开篇问题，用来把论点从正文里分层 */
+.article figure {
+  margin: 0 0 1.75rem;
+}
+
+.article figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+
+.article figcaption {
+  color: var(--foreground-tertiary);
+  font-size: var(--fs-5);
+  margin-top: 0.5rem;
+}
+
+.article .questions {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.article .questions li {
+  background: var(--background-secondary);
+  border-radius: 10px;
+  margin: 0;
+  padding: 0.85rem 1rem;
+}
