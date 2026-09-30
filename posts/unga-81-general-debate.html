@@ -25,7 +25,13 @@
       overflow: hidden;
     }
     .briefing .fill { display: block; height: 18px; border-radius: 3px; }
-    .briefing .barrow b { display: block; text-align: right; font-variant-numeric: tabular-nums; }
+    .briefing .cmp-topic {
+      margin: 14px 0 6px;
+      font-weight: 700;
+      color: #17435a;
+    }
+    .briefing .legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 0 0 8px; font-size: 14px; }
+    .briefing .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; }
     @media (max-width: 720px) {
       .briefing .barrow { grid-template-columns: 6.2rem minmax(3rem, 1fr) 3.4rem; gap: 8px; font-size: 13px; }
     }
@@ -163,95 +169,199 @@
         <figcaption><strong>Method:</strong> Textual similarity, not agreement in diplomatic positions. Only selected speaking entities are shown.</figcaption>
       </figure>
 
-      <h2>4. Fifteen predefined topics: breadth and emphasis</h2>
+      <h2>4. Fifteen predefined topics: what a sentence-level reading finds</h2>
       <p>
-        A sentence-by-sentence keyword classification of 21,312 sentences in main speeches found 977 sentences on international law and sovereignty (4.6% of sentences, across 180 speaking entities); 765 on climate (3.6%, across 153 entities); 700 on the Middle East and Palestine (3.3%, across 126 entities); and 660 on UN reform (3.1%, across 163 entities). Individual topic shares are generally in single digits because many sentences contain formalities, background, or subjects outside these 15 categories.
+        Sections 2 and 3 count words. This section reads the same 21,312 main-speech sentences one by one. A local model, Qwen 2.5 7B, marks a sentence only when it actually takes up one of 15 predefined topics. A sentence may receive more than one topic, or none. Statements by the Secretary-General and the President of the General Assembly are not in this set.
+      </p>
+      <p>
+        Of those sentences, 5,943 (27.9%) receive none of the 15 labels. Among the sentences that do, the distribution is no longer a set of thin slices. UN reform and multilateralism accounts for 20.8% of all sentences and appears in speeches by 183 of 194 speaking entities (94.3%). Conflict prevention, mediation and peacebuilding reaches slightly more speakers (184, or 94.8%) and is the second-largest share of sentences (13.2%). Development finance and the SDGs take 9.7% of sentences, climate 8.1%, and international law and sovereignty 7.2%. Artificial intelligence is no longer a marginal tag: 5.5% of sentences, across 139 entities (71.6%).
+      </p>
+      <p>
+        The Middle East and Palestine (4.9% of sentences, 57.2% of entities) and the war in Ukraine (4.7%, 59.3%) are widely mentioned and still more concentrated than reform or peacebuilding. Haiti, Cuba sanctions, terrorism and reparatory justice remain the narrowest topics. Reach and volume are not the same thing. Conflict prevention has the widest country coverage; UN reform takes the most space.
       </p>
       <figure>
-        <div class="chart-title">Share of sentences in main speeches matching each topic</div>
+        <div class="chart-title">Share of main-speech sentences coded to each topic</div>
         <div class="bars">
-          <div class="barrow"><span class="lab">International law and sovereignty</span><div class="track"><div class="fill" style="width:100%;background:#155a79"></div></div><b>4.6%</b></div>
-          <div class="barrow"><span class="lab">Climate action and finance</span><div class="track"><div class="fill" style="width:78.3%;background:#155a79"></div></div><b>3.6%</b></div>
-          <div class="barrow"><span class="lab">Middle East and Palestine</span><div class="track"><div class="fill" style="width:71.7%;background:#155a79"></div></div><b>3.3%</b></div>
-          <div class="barrow"><span class="lab">UN reform and multilateralism</span><div class="track"><div class="fill" style="width:67.4%;background:#155a79"></div></div><b>3.1%</b></div>
-          <div class="barrow"><span class="lab">African peace and security</span><div class="track"><div class="fill" style="width:32.6%;background:#155a79"></div></div><b>1.5%</b></div>
-          <div class="barrow"><span class="lab">Maritime security and oceans</span><div class="track"><div class="fill" style="width:30.4%;background:#155a79"></div></div><b>1.4%</b></div>
-          <div class="barrow"><span class="lab">AI and digital governance</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
-          <div class="barrow"><span class="lab">War in Ukraine</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
-          <div class="barrow"><span class="lab">Terrorism and transnational crime</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
-          <div class="barrow"><span class="lab">Development finance and SDGs</span><div class="track"><div class="fill" style="width:23.9%;background:#155a79"></div></div><b>1.1%</b></div>
-          <div class="barrow"><span class="lab">Prevention and peacebuilding</span><div class="track"><div class="fill" style="width:15.2%;background:#155a79"></div></div><b>0.7%</b></div>
-          <div class="barrow"><span class="lab">Reparatory justice</span><div class="track"><div class="fill" style="width:15.2%;background:#155a79"></div></div><b>0.7%</b></div>
-          <div class="barrow"><span class="lab">Haiti crisis</span><div class="track"><div class="fill" style="width:13%;background:#155a79"></div></div><b>0.6%</b></div>
-          <div class="barrow"><span class="lab">Cuba sanctions and blockade</span><div class="track"><div class="fill" style="width:13%;background:#155a79"></div></div><b>0.6%</b></div>
-          <div class="barrow"><span class="lab">Nuclear disarmament</span><div class="track"><div class="fill" style="width:8.7%;background:#155a79"></div></div><b>0.4%</b></div>
+          <div class="barrow"><span class="lab">UN reform and multilateralism</span><div class="track"><div class="fill" style="width:100.0%;background:#1f4e79"></div></div><b>20.8%</b></div>
+          <div class="barrow"><span class="lab">Conflict prevention and peacebuilding</span><div class="track"><div class="fill" style="width:63.5%;background:#1f4e79"></div></div><b>13.2%</b></div>
+          <div class="barrow"><span class="lab">Development finance and SDGs</span><div class="track"><div class="fill" style="width:46.6%;background:#1f4e79"></div></div><b>9.7%</b></div>
+          <div class="barrow"><span class="lab">Climate action and finance</span><div class="track"><div class="fill" style="width:38.9%;background:#1f4e79"></div></div><b>8.1%</b></div>
+          <div class="barrow"><span class="lab">International law and sovereignty</span><div class="track"><div class="fill" style="width:34.6%;background:#1f4e79"></div></div><b>7.2%</b></div>
+          <div class="barrow"><span class="lab">AI and digital governance</span><div class="track"><div class="fill" style="width:26.4%;background:#1f4e79"></div></div><b>5.5%</b></div>
+          <div class="barrow"><span class="lab">Middle East and Palestine</span><div class="track"><div class="fill" style="width:23.6%;background:#1f4e79"></div></div><b>4.9%</b></div>
+          <div class="barrow"><span class="lab">War in Ukraine</span><div class="track"><div class="fill" style="width:22.6%;background:#1f4e79"></div></div><b>4.7%</b></div>
+          <div class="barrow"><span class="lab">Maritime security and oceans</span><div class="track"><div class="fill" style="width:17.3%;background:#1f4e79"></div></div><b>3.6%</b></div>
+          <div class="barrow"><span class="lab">Nuclear disarmament</span><div class="track"><div class="fill" style="width:15.9%;background:#1f4e79"></div></div><b>3.3%</b></div>
+          <div class="barrow"><span class="lab">African peace and security</span><div class="track"><div class="fill" style="width:15.4%;background:#1f4e79"></div></div><b>3.2%</b></div>
+          <div class="barrow"><span class="lab">Reparatory justice</span><div class="track"><div class="fill" style="width:12.0%;background:#1f4e79"></div></div><b>2.5%</b></div>
+          <div class="barrow"><span class="lab">Terrorism and transnational crime</span><div class="track"><div class="fill" style="width:8.2%;background:#1f4e79"></div></div><b>1.7%</b></div>
+          <div class="barrow"><span class="lab">Cuba sanctions and blockade</span><div class="track"><div class="fill" style="width:6.2%;background:#1f4e79"></div></div><b>1.3%</b></div>
+          <div class="barrow"><span class="lab">Haiti crisis</span><div class="track"><div class="fill" style="width:5.8%;background:#1f4e79"></div></div><b>1.2%</b></div>
         </div>
-        <figcaption><strong>Method:</strong> A keyword dictionary identifies 15 topics sentence by sentence, using 21,312 sentences as the denominator. One sentence may match several topics or none. The bars are scaled to the largest share, not to 100% of all sentences.</figcaption>
+        <figcaption><strong>Method:</strong> Qwen 2.5 7B coded each of 21,312 main-speech sentences into 15 predefined topics. A sentence may receive several topics or none. Bar length is the share of all sentences, scaled to the largest topic, not to 100%.</figcaption>
       </figure>
       <figure>
-        <div class="chart-title">Share of speaking entities mentioning each topic at least once</div>
+        <div class="chart-title">Share of speaking entities with at least one sentence on the topic</div>
         <div class="bars">
-          <div class="barrow"><span class="lab">International law and sovereignty</span><div class="track"><div class="fill" style="width:100%;background:#b96b27"></div></div><b>92.8%</b></div>
-          <div class="barrow"><span class="lab">UN reform and multilateralism</span><div class="track"><div class="fill" style="width:90.5%;background:#b96b27"></div></div><b>84.0%</b></div>
-          <div class="barrow"><span class="lab">Climate action and finance</span><div class="track"><div class="fill" style="width:85%;background:#b96b27"></div></div><b>78.9%</b></div>
-          <div class="barrow"><span class="lab">Middle East and Palestine</span><div class="track"><div class="fill" style="width:69.9%;background:#b96b27"></div></div><b>64.9%</b></div>
-          <div class="barrow"><span class="lab">AI and digital governance</span><div class="track"><div class="fill" style="width:68.9%;background:#b96b27"></div></div><b>63.9%</b></div>
-          <div class="barrow"><span class="lab">Development finance and SDGs</span><div class="track"><div class="fill" style="width:55%;background:#b96b27"></div></div><b>51.0%</b></div>
-          <div class="barrow"><span class="lab">Terrorism and transnational crime</span><div class="track"><div class="fill" style="width:51.6%;background:#b96b27"></div></div><b>47.9%</b></div>
-          <div class="barrow"><span class="lab">Maritime security and oceans</span><div class="track"><div class="fill" style="width:50%;background:#b96b27"></div></div><b>46.4%</b></div>
-          <div class="barrow"><span class="lab">African peace and security</span><div class="track"><div class="fill" style="width:47.7%;background:#b96b27"></div></div><b>44.3%</b></div>
-          <div class="barrow"><span class="lab">Prevention and peacebuilding</span><div class="track"><div class="fill" style="width:45.6%;background:#b96b27"></div></div><b>42.3%</b></div>
-          <div class="barrow"><span class="lab">War in Ukraine</span><div class="track"><div class="fill" style="width:43.9%;background:#b96b27"></div></div><b>40.7%</b></div>
-          <div class="barrow"><span class="lab">Reparatory justice</span><div class="track"><div class="fill" style="width:34.5%;background:#b96b27"></div></div><b>32.0%</b></div>
-          <div class="barrow"><span class="lab">Cuba sanctions and blockade</span><div class="track"><div class="fill" style="width:26.1%;background:#b96b27"></div></div><b>24.2%</b></div>
-          <div class="barrow"><span class="lab">Nuclear disarmament</span><div class="track"><div class="fill" style="width:24.5%;background:#b96b27"></div></div><b>22.7%</b></div>
-          <div class="barrow"><span class="lab">Haiti crisis</span><div class="track"><div class="fill" style="width:16.1%;background:#b96b27"></div></div><b>14.9%</b></div>
+          <div class="barrow"><span class="lab">Conflict prevention and peacebuilding</span><div class="track"><div class="fill" style="width:100.0%;background:#c45911"></div></div><b>94.8%</b></div>
+          <div class="barrow"><span class="lab">UN reform and multilateralism</span><div class="track"><div class="fill" style="width:99.5%;background:#c45911"></div></div><b>94.3%</b></div>
+          <div class="barrow"><span class="lab">International law and sovereignty</span><div class="track"><div class="fill" style="width:85.9%;background:#c45911"></div></div><b>81.4%</b></div>
+          <div class="barrow"><span class="lab">Development finance and SDGs</span><div class="track"><div class="fill" style="width:80.0%;background:#c45911"></div></div><b>75.8%</b></div>
+          <div class="barrow"><span class="lab">Climate action and finance</span><div class="track"><div class="fill" style="width:80.0%;background:#c45911"></div></div><b>75.8%</b></div>
+          <div class="barrow"><span class="lab">AI and digital governance</span><div class="track"><div class="fill" style="width:75.5%;background:#c45911"></div></div><b>71.6%</b></div>
+          <div class="barrow"><span class="lab">African peace and security</span><div class="track"><div class="fill" style="width:66.4%;background:#c45911"></div></div><b>62.9%</b></div>
+          <div class="barrow"><span class="lab">War in Ukraine</span><div class="track"><div class="fill" style="width:62.6%;background:#c45911"></div></div><b>59.3%</b></div>
+          <div class="barrow"><span class="lab">Maritime security and oceans</span><div class="track"><div class="fill" style="width:61.4%;background:#c45911"></div></div><b>58.2%</b></div>
+          <div class="barrow"><span class="lab">Middle East and Palestine</span><div class="track"><div class="fill" style="width:60.3%;background:#c45911"></div></div><b>57.2%</b></div>
+          <div class="barrow"><span class="lab">Nuclear disarmament</span><div class="track"><div class="fill" style="width:50.0%;background:#c45911"></div></div><b>47.4%</b></div>
+          <div class="barrow"><span class="lab">Reparatory justice</span><div class="track"><div class="fill" style="width:44.1%;background:#c45911"></div></div><b>41.8%</b></div>
+          <div class="barrow"><span class="lab">Terrorism and transnational crime</span><div class="track"><div class="fill" style="width:36.4%;background:#c45911"></div></div><b>34.5%</b></div>
+          <div class="barrow"><span class="lab">Cuba sanctions and blockade</span><div class="track"><div class="fill" style="width:32.6%;background:#c45911"></div></div><b>30.9%</b></div>
+          <div class="barrow"><span class="lab">Haiti crisis</span><div class="track"><div class="fill" style="width:28.3%;background:#c45911"></div></div><b>26.8%</b></div>
         </div>
-        <figcaption><strong>Method:</strong> The denominator is the 194 speaking entities in the main speeches, including the European Union and Palestine. An entity is counted once if at least one sentence matches the topic. Bars are scaled to the largest share.</figcaption>
+        <figcaption><strong>Method:</strong> The denominator is 194 speaking entities, including the European Union and Palestine. An entity is counted once if at least one of its sentences is coded to the topic. Bars are scaled to the widest coverage.</figcaption>
       </figure>
-      <p>
-        The two percentages describe different aspects of the agenda. UN reform appears at least once in speeches by 163 entities (84.0%), but accounts for 3.1% of all sentences. The Middle East and Palestine has a narrower reach (64.9%) but a slightly higher sentence share (3.3%). The number of entities discussing a topic should not be conflated with the amount of space devoted to it. Artificial intelligence and digital governance appears in speeches by 124 entities (63.9%), but matches 262 sentences (1.2%): it is already widely mentioned, yet still occupies relatively little space in lengthy national speeches.
-      </p>
 
-      <h3>Where each topic takes the largest share of a speech</h3>
+      <h3>China’s main speech</h3>
       <p>
-        Some issues show distinct national or regional concentrations. Sentences on climate account for 26% of Tuvalu’s main speech, 22% of Micronesia’s and 18% of the Marshall Islands’. Those on oceans account for 16% of Tonga’s and 13% of Palau’s. The Middle East and Palestine accounts for 45% of Palestine’s, 25% of Jordan’s and 21% of Israel’s. African peace and security accounts for 47% of South Sudan’s, 26% of Sudan’s and 25% of Somalia’s. Speaking entities discuss a shared UN agenda while putting their own circumstances of survival, development and security into it.
+        China’s main speech is 57 sentences. Under the same coding, 22 of them (38.6%) are UN reform and multilateralism. Development finance and African peace and security each take 7 sentences (12.3%). Conflict prevention takes 6 (10.5%), and the Middle East and Palestine 4 (7.0%). Climate, oceans and international law are each a single sentence. Haiti, terrorism and reparatory justice do not appear. A high share is the share of this speech, not a claim that China uttered the largest number of sentences on that topic in the hall.
       </p>
       <figure>
-        <div class="chart-title">Five entities with the highest share of each topic in their own speech</div>
-        <div class="scroll">
-        <table>
-          <thead>
-            <tr><th>Predefined topic</th><th>Highest shares within that entity’s own main speech</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>UN reform and multilateralism</td><td>Guinea-Bissau (20%); European Union (19%); Indonesia (13%); Chad (12%); Liberia (11%)</td></tr>
-            <tr><td>War in Ukraine</td><td>Ukraine (13%); Estonia (13%); Russian Federation (12%); Romania (11%); Lithuania (10%)</td></tr>
-            <tr><td>Artificial intelligence and digital governance</td><td>Albania (13%); European Union (6%); Angola (6%); Argentina (5%); Australia (5%)</td></tr>
-            <tr><td>Middle East conflicts and the Palestine question</td><td>Palestine (45%); Jordan (25%); Israel (21%); Qatar (16%); Mauritania (14%)</td></tr>
-            <tr><td>Climate action, resilience and finance</td><td>Tuvalu (26%); Micronesia (22%); Marshall Islands (18%); Djibouti (17%); Tonga (16%)</td></tr>
-            <tr><td>Development finance, debt reform and SDG implementation</td><td>United Republic of Tanzania (10%); Malawi (7%); Liberia (6%); Madagascar (6%); Namibia (6%)</td></tr>
-            <tr><td>Maritime security and ocean governance</td><td>Tonga (16%); Palau (13%); Tuvalu (11%); Micronesia (9%); Philippines (9%)</td></tr>
-            <tr><td>Conflict prevention, mediation and peacebuilding</td><td>Turkmenistan (10%); Gambia (6%); United Arab Emirates (6%); Equatorial Guinea (5%); Togo (5%)</td></tr>
-            <tr><td>African peace and security</td><td>South Sudan (47%); Sudan (26%); Somalia (25%); Burkina Faso (18%); Mali (9%)</td></tr>
-            <tr><td>Haiti crisis</td><td>Haiti (29%); Dominican Republic (10%); Saint Lucia (10%); Grenada (6%); Trinidad and Tobago (5%)</td></tr>
-            <tr><td>Terrorism and transnational crime</td><td>Yemen (13%); Mali (10%); Colombia (9%); Burkina Faso (8%); Iran (8%)</td></tr>
-            <tr><td>Nuclear disarmament</td><td>Kazakhstan (6%); Japan (5%); New Zealand (5%); Bulgaria (4%); South Africa (3%)</td></tr>
-            <tr><td>International law and state sovereignty</td><td>Oman (22%); Viet Nam (17%); Kuwait (16%); Seychelles (15%); Egypt (14%)</td></tr>
-            <tr><td>Reparatory justice and anti-racism</td><td>Ghana (5%); Namibia (5%); Suriname (5%); Burkina Faso (5%); Saint Lucia (4%)</td></tr>
-            <tr><td>Cuba sanctions and blockade</td><td>Cuba (32%); Nicaragua (6%); Angola (6%); Grenada (5%); Guinea-Bissau (4%)</td></tr>
-          </tbody>
-        </table>
-      </div>
-        <figcaption><strong>Method:</strong> After sentence-level keyword coding, each topic is measured as a share of all sentences in that entity’s own main speech. These shares are not measures of policy support.</figcaption>
-      </figure>
-      <details>
-        <summary><strong>Full coverage heatmap: 194 speaking entities × 15 topics</strong></summary>
-        <div class="zoom">
-          <img src="../assets/images/unga81-coverage.png" alt="Heatmap of how much of each main speech matches each of 15 topics">
+        <div class="chart-title">Topics in China’s main speech</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">UN reform and multilateralism</span><div class="track"><div class="fill" style="width:100.0%;background:#7b2d26"></div></div><b>38.6%</b></div>
+          <div class="barrow"><span class="lab">Development finance and SDGs</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">African peace and security</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">Conflict prevention and peacebuilding</span><div class="track"><div class="fill" style="width:27.2%;background:#7b2d26"></div></div><b>10.5%</b></div>
+          <div class="barrow"><span class="lab">Middle East and Palestine</span><div class="track"><div class="fill" style="width:18.1%;background:#7b2d26"></div></div><b>7.0%</b></div>
+          <div class="barrow"><span class="lab">War in Ukraine</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">AI and digital governance</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">Nuclear disarmament</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">Cuba sanctions and blockade</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">Climate action and finance</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">Maritime security and oceans</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">International law and sovereignty</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
         </div>
-        <p class="method">Each cell is the share of sentences in that entity’s main speech matching the topic. Scroll inside the frame to read the full matrix.</p>
-      </details>
+        <figcaption><strong>Method:</strong> The same sentence-level coding, limited to China’s 57 sentences. Topics with no coded sentence are omitted. Percentages can overlap when one sentence receives more than one topic; here the coded sentences sum to 57.</figcaption>
+      </figure>
+
+      <h3>China, the United States, Russia and the European Union</h3>
+      <p>
+        The four speeches are different lengths: China 57 sentences, the United States 304, Russia 106 and the European Union 77. The comparison below uses the share inside each speech.
+      </p>
+      <p>
+        UN reform is a large part of the Chinese (38.6%), Russian (36.8%) and EU (31.2%) speeches, and a smaller part of the much longer US speech (14.8%, though that is 45 sentences, more than China’s 22). The US speech puts its largest share on nuclear disarmament (20.4%, 62 sentences). Russia’s distinctive concentrations are the war in Ukraine (20.8%) and artificial intelligence (14.2%). The EU speech puts 23.4% of its sentences on international law and sovereignty, beside reform and conflict prevention (22.1%). Development finance is 12.3% of China’s speech and 13.0% of the EU speech, and is absent from the US and Russian speeches under this coding. African peace and security is 12.3% of China’s speech and 1.3% of the US speech; Russia and the EU have none.
+      </p>
+      <figure>
+        <div class="chart-title">Topic shares inside four main speeches</div>
+        <div class="legend"><span><i style="background:#7b2d26"></i>China</span><span><i style="background:#1f4e79"></i>United States</span><span><i style="background:#5c5c5c"></i>Russia</span><span><i style="background:#c45911"></i>European Union</span></div>
+        <div class="cmp-topic">UN reform and multilateralism</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:100.0%;background:#7b2d26"></div></div><b>38.6%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:38.3%;background:#1f4e79"></div></div><b>14.8%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:95.3%;background:#5c5c5c"></div></div><b>36.8%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:80.8%;background:#c45911"></div></div><b>31.2%</b></div>
+        </div>
+        <div class="cmp-topic">Conflict prevention and peacebuilding</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:27.2%;background:#7b2d26"></div></div><b>10.5%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:10.1%;background:#1f4e79"></div></div><b>3.9%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:49.0%;background:#5c5c5c"></div></div><b>18.9%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:57.3%;background:#c45911"></div></div><b>22.1%</b></div>
+        </div>
+        <div class="cmp-topic">Development finance and SDGs</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:0.0%;background:#1f4e79"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:33.7%;background:#c45911"></div></div><b>13.0%</b></div>
+        </div>
+        <div class="cmp-topic">Climate action and finance</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:2.6%;background:#1f4e79"></div></div><b>1.0%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:20.2%;background:#c45911"></div></div><b>7.8%</b></div>
+        </div>
+        <div class="cmp-topic">International law and sovereignty</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:11.1%;background:#1f4e79"></div></div><b>4.3%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:19.4%;background:#5c5c5c"></div></div><b>7.5%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:60.6%;background:#c45911"></div></div><b>23.4%</b></div>
+        </div>
+        <div class="cmp-topic">AI and digital governance</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:5.2%;background:#1f4e79"></div></div><b>2.0%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:36.8%;background:#5c5c5c"></div></div><b>14.2%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:16.8%;background:#c45911"></div></div><b>6.5%</b></div>
+        </div>
+        <div class="cmp-topic">Middle East and Palestine</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:18.1%;background:#7b2d26"></div></div><b>7.0%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:2.6%;background:#1f4e79"></div></div><b>1.0%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:4.9%;background:#5c5c5c"></div></div><b>1.9%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:13.5%;background:#c45911"></div></div><b>5.2%</b></div>
+        </div>
+        <div class="cmp-topic">War in Ukraine</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:21.2%;background:#1f4e79"></div></div><b>8.2%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:53.9%;background:#5c5c5c"></div></div><b>20.8%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:16.8%;background:#c45911"></div></div><b>6.5%</b></div>
+        </div>
+        <div class="cmp-topic">Maritime security and oceans</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:0.8%;background:#1f4e79"></div></div><b>0.3%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:3.4%;background:#c45911"></div></div><b>1.3%</b></div>
+        </div>
+        <div class="cmp-topic">Nuclear disarmament</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:52.8%;background:#1f4e79"></div></div><b>20.4%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:12.2%;background:#5c5c5c"></div></div><b>4.7%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:3.4%;background:#c45911"></div></div><b>1.3%</b></div>
+        </div>
+        <div class="cmp-topic">African peace and security</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:3.4%;background:#1f4e79"></div></div><b>1.3%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <div class="cmp-topic">Reparatory justice</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:0.0%;background:#7b2d26"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:1.8%;background:#1f4e79"></div></div><b>0.7%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:17.1%;background:#5c5c5c"></div></div><b>6.6%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:3.4%;background:#c45911"></div></div><b>1.3%</b></div>
+        </div>
+        <div class="cmp-topic">Terrorism and transnational crime</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:0.0%;background:#7b2d26"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:14.5%;background:#1f4e79"></div></div><b>5.6%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <div class="cmp-topic">Cuba sanctions and blockade</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:8.5%;background:#1f4e79"></div></div><b>3.3%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:7.3%;background:#5c5c5c"></div></div><b>2.8%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <div class="cmp-topic">Haiti crisis</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">China</span><div class="track"><div class="fill" style="width:0.0%;background:#7b2d26"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">United States</span><div class="track"><div class="fill" style="width:0.8%;background:#1f4e79"></div></div><b>0.3%</b></div>
+          <div class="barrow"><span class="lab">Russia</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">European Union</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <figcaption><strong>Method:</strong> Within-speech percentages from the same model coding. Every bar is scaled to 38.6%, China’s share on UN reform, so the four speeches can be compared on one scale. A higher percentage is not a larger sentence count: the US speech is 304 sentences long, Russia 106, the EU 77 and China 57.</figcaption>
+      </figure>
 
       <h2>5. Who names whom?</h2>
       <p>
