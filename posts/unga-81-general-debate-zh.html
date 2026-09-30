@@ -26,6 +26,9 @@
     }
     .briefing .fill { display: block; height: 18px; border-radius: 3px; }
     .briefing .barrow b { display: block; text-align: right; font-variant-numeric: tabular-nums; }
+    .briefing .cmp-topic { margin: 14px 0 6px; font-weight: 700; color: #17435a; }
+    .briefing .legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 0 0 8px; font-size: 14px; }
+    .briefing .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; }
     @media (max-width: 720px) {
       .briefing .barrow { grid-template-columns: 6.2rem minmax(3rem, 1fr) 3.4rem; gap: 8px; font-size: 13px; }
     }
@@ -168,97 +171,199 @@
         <figcaption><strong>方法：</strong>表中分值是文本相似度，不是外交立场一致程度；仅列部分发言方以作参考。</figcaption>
       </figure>
 
-      <h2>四、15个预设主题：议程有多广、重点落在何处</h2>
+      <h2>四、15个预设主题：模型逐句判断的分布与国家覆盖</h2>
       <p>
-        预先设定的15个议题覆盖国际法与主权、联合国改革、中东与巴勒斯坦、气候、人工智能、发展融资等。对21,312个主旨发言句子逐句用关键词规则编码后，国际法与主权命中977句，占全部句子的4.6%，覆盖180个发言方；气候命中765句，涉及153个发言方；中东与巴勒斯坦命中700句，涉及126个发言方；联合国改革命中660句，涉及163个发言方。句子占比普遍只有个位数，反映的是每一类在全部句子中的份额，不能据此认为其不重要：大量句子是礼仪、背景或难以由这15类覆盖的其他内容。
+        第二、三部分数的是词。这一部分改用本地模型 Qwen 2.5 7B，逐句阅读同样的 21,312 句主旨发言。模型只在句子确实谈到某个主题时才打上标签，一句可以有多个主题，也可以一个都没有。秘书长和大会主席的讲话不在这批句子里。
+      </p>
+      <p>
+        其中 5,943 句（27.9%）没有归入这 15 个主题。归入之后，格局不再是一组很小的句子份额。联合国改革与多边主义占全部句子的 20.8%，出现在 194 个发言方中的 183 个（94.3%）。冲突预防、调解与建设和平覆盖的发言方略多（184 个，94.8%），句子占比居第二（13.2%）。发展融资、债务改革与可持续发展目标占 9.7%，气候占 8.1%，国际法与国家主权占 7.2%。人工智能不再是边缘标签：占句子的 5.5%，涉及 139 个发言方（71.6%）。
+      </p>
+      <p>
+        中东冲突与巴勒斯坦问题（句子占 4.9%，发言方占 57.2%）和乌克兰战争（4.7%，59.3%）提及面广，但仍比改革和建设和平更集中。海地、对古巴制裁、恐怖主义与修复性正义仍然是覆盖面最小的主题。覆盖面和篇幅不是同一件事：冲突预防的国家覆盖最广，联合国改革占的句子最多。
       </p>
       <figure>
-        <div class="chart-title">15个主题：命中主旨发言的句子占比</div>
+        <div class="chart-title">主旨发言中被模型判入各主题的句子占比</div>
         <div class="bars">
-          <div class="barrow"><span class="lab">国际法与国家主权</span><div class="track"><div class="fill" style="width:100%;background:#155a79"></div></div><b>4.6%</b></div>
-          <div class="barrow"><span class="lab">气候行动、韧性与资金</span><div class="track"><div class="fill" style="width:78.3%;background:#155a79"></div></div><b>3.6%</b></div>
-          <div class="barrow"><span class="lab">中东冲突与巴勒斯坦问题</span><div class="track"><div class="fill" style="width:71.7%;background:#155a79"></div></div><b>3.3%</b></div>
-          <div class="barrow"><span class="lab">联合国改革与多边主义</span><div class="track"><div class="fill" style="width:67.4%;background:#155a79"></div></div><b>3.1%</b></div>
-          <div class="barrow"><span class="lab">非洲和平与安全</span><div class="track"><div class="fill" style="width:32.6%;background:#155a79"></div></div><b>1.5%</b></div>
-          <div class="barrow"><span class="lab">海事安全与海洋治理</span><div class="track"><div class="fill" style="width:30.4%;background:#155a79"></div></div><b>1.4%</b></div>
-          <div class="barrow"><span class="lab">人工智能与数字治理</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
-          <div class="barrow"><span class="lab">乌克兰战争</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
-          <div class="barrow"><span class="lab">恐怖主义与跨国犯罪</span><div class="track"><div class="fill" style="width:26.1%;background:#155a79"></div></div><b>1.2%</b></div>
-          <div class="barrow"><span class="lab">发展融资、债务与SDG</span><div class="track"><div class="fill" style="width:23.9%;background:#155a79"></div></div><b>1.1%</b></div>
-          <div class="barrow"><span class="lab">冲突预防与建设和平</span><div class="track"><div class="fill" style="width:15.2%;background:#155a79"></div></div><b>0.7%</b></div>
-          <div class="barrow"><span class="lab">修复性正义与反种族主义</span><div class="track"><div class="fill" style="width:15.2%;background:#155a79"></div></div><b>0.7%</b></div>
-          <div class="barrow"><span class="lab">海地危机</span><div class="track"><div class="fill" style="width:13%;background:#155a79"></div></div><b>0.6%</b></div>
-          <div class="barrow"><span class="lab">对古巴制裁与封锁</span><div class="track"><div class="fill" style="width:13%;background:#155a79"></div></div><b>0.6%</b></div>
-          <div class="barrow"><span class="lab">核裁军</span><div class="track"><div class="fill" style="width:8.7%;background:#155a79"></div></div><b>0.4%</b></div>
+          <div class="barrow"><span class="lab">联合国改革与多边主义</span><div class="track"><div class="fill" style="width:100.0%;background:#1f4e79"></div></div><b>20.8%</b></div>
+          <div class="barrow"><span class="lab">冲突预防、调解与建设和平</span><div class="track"><div class="fill" style="width:63.5%;background:#1f4e79"></div></div><b>13.2%</b></div>
+          <div class="barrow"><span class="lab">发展融资、债务与可持续发展目标</span><div class="track"><div class="fill" style="width:46.6%;background:#1f4e79"></div></div><b>9.7%</b></div>
+          <div class="barrow"><span class="lab">气候行动、韧性与资金</span><div class="track"><div class="fill" style="width:38.9%;background:#1f4e79"></div></div><b>8.1%</b></div>
+          <div class="barrow"><span class="lab">国际法与国家主权</span><div class="track"><div class="fill" style="width:34.6%;background:#1f4e79"></div></div><b>7.2%</b></div>
+          <div class="barrow"><span class="lab">人工智能与数字治理</span><div class="track"><div class="fill" style="width:26.4%;background:#1f4e79"></div></div><b>5.5%</b></div>
+          <div class="barrow"><span class="lab">中东冲突与巴勒斯坦问题</span><div class="track"><div class="fill" style="width:23.6%;background:#1f4e79"></div></div><b>4.9%</b></div>
+          <div class="barrow"><span class="lab">乌克兰战争</span><div class="track"><div class="fill" style="width:22.6%;background:#1f4e79"></div></div><b>4.7%</b></div>
+          <div class="barrow"><span class="lab">海事安全与海洋治理</span><div class="track"><div class="fill" style="width:17.3%;background:#1f4e79"></div></div><b>3.6%</b></div>
+          <div class="barrow"><span class="lab">核裁军</span><div class="track"><div class="fill" style="width:15.9%;background:#1f4e79"></div></div><b>3.3%</b></div>
+          <div class="barrow"><span class="lab">非洲和平与安全</span><div class="track"><div class="fill" style="width:15.4%;background:#1f4e79"></div></div><b>3.2%</b></div>
+          <div class="barrow"><span class="lab">修复性正义与反种族主义</span><div class="track"><div class="fill" style="width:12.0%;background:#1f4e79"></div></div><b>2.5%</b></div>
+          <div class="barrow"><span class="lab">恐怖主义与跨国犯罪</span><div class="track"><div class="fill" style="width:8.2%;background:#1f4e79"></div></div><b>1.7%</b></div>
+          <div class="barrow"><span class="lab">对古巴制裁与封锁</span><div class="track"><div class="fill" style="width:6.2%;background:#1f4e79"></div></div><b>1.3%</b></div>
+          <div class="barrow"><span class="lab">海地危机</span><div class="track"><div class="fill" style="width:5.8%;background:#1f4e79"></div></div><b>1.2%</b></div>
         </div>
-        <figcaption><strong>方法：</strong>以21,312句为分母，关键词词典逐句识别15个预设主题。一句可同时命中多个主题，也可不命中任何主题。条长按最大句子占比缩放，不是全部句子的互斥份额。</figcaption>
+        <figcaption><strong>方法：</strong>Qwen 2.5 7B 对 21,312 句主旨发言逐句判断，归入 15 个预设主题。一句可有多个主题，也可以一个都没有。条长是占全部句子的比例，按最大主题缩放，不是按 100% 缩放。</figcaption>
       </figure>
       <figure>
-        <div class="chart-title">15个主题：至少有一句涉及该主题的发言方占比</div>
+        <div class="chart-title">至少有一句被判入该主题的发言方占比</div>
         <div class="bars">
-          <div class="barrow"><span class="lab">国际法与国家主权</span><div class="track"><div class="fill" style="width:100%;background:#b96b27"></div></div><b>92.8%</b></div>
-          <div class="barrow"><span class="lab">联合国改革与多边主义</span><div class="track"><div class="fill" style="width:90.5%;background:#b96b27"></div></div><b>84.0%</b></div>
-          <div class="barrow"><span class="lab">气候行动、韧性与资金</span><div class="track"><div class="fill" style="width:85%;background:#b96b27"></div></div><b>78.9%</b></div>
-          <div class="barrow"><span class="lab">中东冲突与巴勒斯坦问题</span><div class="track"><div class="fill" style="width:69.9%;background:#b96b27"></div></div><b>64.9%</b></div>
-          <div class="barrow"><span class="lab">人工智能与数字治理</span><div class="track"><div class="fill" style="width:68.9%;background:#b96b27"></div></div><b>63.9%</b></div>
-          <div class="barrow"><span class="lab">发展融资、债务与SDG</span><div class="track"><div class="fill" style="width:55%;background:#b96b27"></div></div><b>51.0%</b></div>
-          <div class="barrow"><span class="lab">恐怖主义与跨国犯罪</span><div class="track"><div class="fill" style="width:51.6%;background:#b96b27"></div></div><b>47.9%</b></div>
-          <div class="barrow"><span class="lab">海事安全与海洋治理</span><div class="track"><div class="fill" style="width:50%;background:#b96b27"></div></div><b>46.4%</b></div>
-          <div class="barrow"><span class="lab">非洲和平与安全</span><div class="track"><div class="fill" style="width:47.7%;background:#b96b27"></div></div><b>44.3%</b></div>
-          <div class="barrow"><span class="lab">冲突预防与建设和平</span><div class="track"><div class="fill" style="width:45.6%;background:#b96b27"></div></div><b>42.3%</b></div>
-          <div class="barrow"><span class="lab">乌克兰战争</span><div class="track"><div class="fill" style="width:43.9%;background:#b96b27"></div></div><b>40.7%</b></div>
-          <div class="barrow"><span class="lab">修复性正义与反种族主义</span><div class="track"><div class="fill" style="width:34.5%;background:#b96b27"></div></div><b>32.0%</b></div>
-          <div class="barrow"><span class="lab">对古巴制裁与封锁</span><div class="track"><div class="fill" style="width:26.1%;background:#b96b27"></div></div><b>24.2%</b></div>
-          <div class="barrow"><span class="lab">核裁军</span><div class="track"><div class="fill" style="width:24.5%;background:#b96b27"></div></div><b>22.7%</b></div>
-          <div class="barrow"><span class="lab">海地危机</span><div class="track"><div class="fill" style="width:16.1%;background:#b96b27"></div></div><b>14.9%</b></div>
+          <div class="barrow"><span class="lab">冲突预防、调解与建设和平</span><div class="track"><div class="fill" style="width:100.0%;background:#c45911"></div></div><b>94.8%</b></div>
+          <div class="barrow"><span class="lab">联合国改革与多边主义</span><div class="track"><div class="fill" style="width:99.5%;background:#c45911"></div></div><b>94.3%</b></div>
+          <div class="barrow"><span class="lab">国际法与国家主权</span><div class="track"><div class="fill" style="width:85.9%;background:#c45911"></div></div><b>81.4%</b></div>
+          <div class="barrow"><span class="lab">发展融资、债务与可持续发展目标</span><div class="track"><div class="fill" style="width:80.0%;background:#c45911"></div></div><b>75.8%</b></div>
+          <div class="barrow"><span class="lab">气候行动、韧性与资金</span><div class="track"><div class="fill" style="width:80.0%;background:#c45911"></div></div><b>75.8%</b></div>
+          <div class="barrow"><span class="lab">人工智能与数字治理</span><div class="track"><div class="fill" style="width:75.5%;background:#c45911"></div></div><b>71.6%</b></div>
+          <div class="barrow"><span class="lab">非洲和平与安全</span><div class="track"><div class="fill" style="width:66.4%;background:#c45911"></div></div><b>62.9%</b></div>
+          <div class="barrow"><span class="lab">乌克兰战争</span><div class="track"><div class="fill" style="width:62.6%;background:#c45911"></div></div><b>59.3%</b></div>
+          <div class="barrow"><span class="lab">海事安全与海洋治理</span><div class="track"><div class="fill" style="width:61.4%;background:#c45911"></div></div><b>58.2%</b></div>
+          <div class="barrow"><span class="lab">中东冲突与巴勒斯坦问题</span><div class="track"><div class="fill" style="width:60.3%;background:#c45911"></div></div><b>57.2%</b></div>
+          <div class="barrow"><span class="lab">核裁军</span><div class="track"><div class="fill" style="width:50.0%;background:#c45911"></div></div><b>47.4%</b></div>
+          <div class="barrow"><span class="lab">修复性正义与反种族主义</span><div class="track"><div class="fill" style="width:44.1%;background:#c45911"></div></div><b>41.8%</b></div>
+          <div class="barrow"><span class="lab">恐怖主义与跨国犯罪</span><div class="track"><div class="fill" style="width:36.4%;background:#c45911"></div></div><b>34.5%</b></div>
+          <div class="barrow"><span class="lab">对古巴制裁与封锁</span><div class="track"><div class="fill" style="width:32.6%;background:#c45911"></div></div><b>30.9%</b></div>
+          <div class="barrow"><span class="lab">海地危机</span><div class="track"><div class="fill" style="width:28.3%;background:#c45911"></div></div><b>26.8%</b></div>
         </div>
-        <figcaption><strong>方法：</strong>以194篇主旨发言所对应的发言方为分母。只要该发言方至少有一句命中主题，即计入一次。欧盟、巴勒斯坦等也在分母中，因此使用“发言方”。条长按最大覆盖面缩放。</figcaption>
+        <figcaption><strong>方法：</strong>分母是 194 个发言方，包含欧盟和巴勒斯坦。只要该发言方至少有一句被判入该主题，即计入一次。条长按最大覆盖面缩放。</figcaption>
       </figure>
+
+      <h3>中国主旨发言的主题</h3>
       <p>
-        两种比例展示的是不同的议程结构。联合国改革在163个发言方中至少出现一次，覆盖面达到84.0%，但其句子占比为3.1%；中东与巴勒斯坦议题覆盖面为64.9%，句子占比却略高（3.3%）。这表明“被多少发言方谈到”和“每段发言投入多少篇幅”不应混为一个指标。人工智能与数字治理覆盖124个发言方（63.9%），命中262句（1.2%）；它已经是广泛提及的新议程，但在长篇国家主旨发言中的篇幅仍相对有限。
-      </p>
-      <h3>各国的主题组合</h3>
-      <p>
-        某些议题具有鲜明的国家或地区聚集性。气候议题在图瓦卢主旨发言中的命中句占比为26%，密克罗尼西亚为22%，马绍尔群岛为18%；海洋议题在汤加为16%、帕劳为13%。中东与巴勒斯坦议题在巴勒斯坦为45%、约旦为25%、以色列为21%；非洲和平与安全在南苏丹为47%、苏丹为26%、索马里为25%。这说明发言方不仅在谈共同的联合国议程，也在将自身的生存、发展和安全处境放进议程之中。
+        中国主旨发言共 57 句。按同一套判断，其中 22 句（38.6%）是联合国改革与多边主义。发展融资和非洲和平与安全各有 7 句（12.3%）。冲突预防、调解与建设和平有 6 句（10.5%），中东与巴勒斯坦问题有 4 句（7.0%）。气候、海洋和国际法各只有 1 句。海地、恐怖主义和修复性正义没有出现。这里的百分比是这篇发言内部的篇幅，不是中国在全场讲这个主题的绝对句数最多。
       </p>
       <figure>
-        <div class="chart-title">各主题句子占比最高的五个发言方</div>
-        <div class="scroll">
-          <table>
-            <thead>
-              <tr><th>预设主题</th><th>主旨发言中该主题句子占比最高的五个发言方</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>联合国改革</td><td>几内亚比绍（20%）；欧盟（19%）；印度尼西亚（13%）；乍得（12%）；利比里亚（11%）</td></tr>
-              <tr><td>乌克兰战争</td><td>乌克兰（13%）；爱沙尼亚（13%）；俄罗斯（12%）；罗马尼亚（11%）；立陶宛（10%）</td></tr>
-              <tr><td>人工智能</td><td>阿尔巴尼亚（13%）；欧盟（6%）；安哥拉（6%）；阿根廷（5%）；澳大利亚（5%）</td></tr>
-              <tr><td>中东与巴勒斯坦</td><td>巴勒斯坦（45%）；约旦（25%）；以色列（21%）；卡塔尔（16%）；毛里塔尼亚（14%）</td></tr>
-              <tr><td>气候</td><td>图瓦卢（26%）；密克罗尼西亚（22%）；马绍尔群岛（18%）；吉布提（17%）；汤加（16%）</td></tr>
-              <tr><td>发展融资与SDG</td><td>坦桑尼亚（10%）；马拉维（7%）；利比里亚（6%）；马达加斯加（6%）；纳米比亚（6%）</td></tr>
-              <tr><td>海洋治理</td><td>汤加（16%）；帕劳（13%）；图瓦卢（11%）；密克罗尼西亚（9%）；菲律宾（9%）</td></tr>
-              <tr><td>建设和平</td><td>土库曼斯坦（10%）；冈比亚（6%）；阿联酋（6%）；赤道几内亚（5%）；多哥（5%）</td></tr>
-              <tr><td>非洲和平安全</td><td>南苏丹（47%）；苏丹（26%）；索马里（25%）；布基纳法索（18%）；马里（9%）</td></tr>
-              <tr><td>海地</td><td>海地（29%）；多米尼加（10%）；圣卢西亚（10%）；格林纳达（6%）；特立尼达和多巴哥（5%）</td></tr>
-              <tr><td>恐怖主义</td><td>也门（13%）；马里（10%）；哥伦比亚（9%）；布基纳法索（8%）；伊朗（8%）</td></tr>
-              <tr><td>核裁军</td><td>哈萨克斯坦（6%）；日本（5%）；新西兰（5%）；保加利亚（4%）；南非（3%）</td></tr>
-              <tr><td>国际法与主权</td><td>阿曼（22%）；越南（17%）；科威特（16%）；塞舌尔（15%）；埃及（14%）</td></tr>
-              <tr><td>修复正义</td><td>加纳（5%）；纳米比亚（5%）；苏里南（5%）；布基纳法索（5%）；圣卢西亚（4%）</td></tr>
-              <tr><td>古巴制裁</td><td>古巴（32%）；尼加拉瓜（6%）；安哥拉（6%）；格林纳达（5%）；几内亚比绍（4%）</td></tr>
-            </tbody>
-          </table>
+        <div class="chart-title">中国主旨发言的主题分布</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">联合国改革与多边主义</span><div class="track"><div class="fill" style="width:100.0%;background:#7b2d26"></div></div><b>38.6%</b></div>
+          <div class="barrow"><span class="lab">发展融资、债务与可持续发展目标</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">非洲和平与安全</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">冲突预防、调解与建设和平</span><div class="track"><div class="fill" style="width:27.2%;background:#7b2d26"></div></div><b>10.5%</b></div>
+          <div class="barrow"><span class="lab">中东冲突与巴勒斯坦问题</span><div class="track"><div class="fill" style="width:18.1%;background:#7b2d26"></div></div><b>7.0%</b></div>
+          <div class="barrow"><span class="lab">乌克兰战争</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">人工智能与数字治理</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">核裁军</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">对古巴制裁与封锁</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">气候行动、韧性与资金</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">海事安全与海洋治理</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">国际法与国家主权</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
         </div>
-        <figcaption><strong>方法：</strong>逐句关键词编码后，以每个发言方自身的主旨发言句子数作分母，比较各主题在其发言中所占比例；仅列每个主题占比最高的五个发言方。</figcaption>
+        <figcaption><strong>方法：</strong>同一套逐句判断，只取中国的 57 句。没有命中句的主题未画出。一句可有多个主题；中国这次命中的句子数合计为 57。</figcaption>
       </figure>
-      <details>
-        <summary><strong>各发言方与15个主题的覆盖热图</strong></summary>
-        <div class="zoom">
-          <img src="../assets/images/unga81-zh-coverage-1.png" alt="发言方与15个主题覆盖热图，第一部分">
-          <img src="../assets/images/unga81-zh-coverage-2.png" alt="发言方与15个主题覆盖热图，第二部分">
-          <img src="../assets/images/unga81-zh-coverage-3.png" alt="发言方与15个主题覆盖热图，第三部分">
-          <img src="../assets/images/unga81-zh-coverage-4.png" alt="发言方与15个主题覆盖热图，第四部分">
+
+      <h3>中国、美国、俄罗斯和欧盟</h3>
+      <p>
+        四篇发言长短差很多：中国 57 句，美国 304 句，俄罗斯 106 句，欧盟 77 句。下面比较的是各自发言内部的句子占比。
+      </p>
+      <p>
+        联合国改革占中国发言的 38.6%、俄罗斯的 36.8%、欧盟的 31.2%，占篇幅更长的美国发言的 14.8%（但美国有 45 句，多于中国的 22 句）。美国把最大份额放在核裁军（20.4%，62 句）。俄罗斯更集中在乌克兰战争（20.8%）和人工智能（14.2%）。欧盟把 23.4% 的句子放在国际法与国家主权上，建设和平占 22.1%。发展融资占中国发言的 12.3%、欧盟的 13.0%，在这套判断里没有出现在美国和俄罗斯的发言中。非洲和平与安全占中国发言的 12.3%、美国的 1.3%，俄罗斯和欧盟没有。
+      </p>
+      <figure>
+        <div class="chart-title">中国、美国、俄罗斯、欧盟的主题对比</div>
+        <div class="legend"><span><i style="background:#7b2d26"></i>中国</span><span><i style="background:#1f4e79"></i>美国</span><span><i style="background:#5c5c5c"></i>俄罗斯</span><span><i style="background:#c45911"></i>欧盟</span></div>
+        <div class="cmp-topic">联合国改革与多边主义</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:100.0%;background:#7b2d26"></div></div><b>38.6%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:38.3%;background:#1f4e79"></div></div><b>14.8%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:95.3%;background:#5c5c5c"></div></div><b>36.8%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:80.8%;background:#c45911"></div></div><b>31.2%</b></div>
         </div>
-        <p class="method">原分析生成的194个发言方 × 15个预设主题覆盖图。各格为该发言方主旨发言中命中相应主题的句子比例。拆成四段只为便于阅读，数值未改。可在框内滚动查看。</p>
-      </details>
+        <div class="cmp-topic">冲突预防、调解与建设和平</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:27.2%;background:#7b2d26"></div></div><b>10.5%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:10.1%;background:#1f4e79"></div></div><b>3.9%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:49.0%;background:#5c5c5c"></div></div><b>18.9%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:57.3%;background:#c45911"></div></div><b>22.1%</b></div>
+        </div>
+        <div class="cmp-topic">发展融资、债务与可持续发展目标</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:0.0%;background:#1f4e79"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:33.7%;background:#c45911"></div></div><b>13.0%</b></div>
+        </div>
+        <div class="cmp-topic">气候行动、韧性与资金</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:2.6%;background:#1f4e79"></div></div><b>1.0%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:20.2%;background:#c45911"></div></div><b>7.8%</b></div>
+        </div>
+        <div class="cmp-topic">国际法与国家主权</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:11.1%;background:#1f4e79"></div></div><b>4.3%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:19.4%;background:#5c5c5c"></div></div><b>7.5%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:60.6%;background:#c45911"></div></div><b>23.4%</b></div>
+        </div>
+        <div class="cmp-topic">人工智能与数字治理</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:5.2%;background:#1f4e79"></div></div><b>2.0%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:36.8%;background:#5c5c5c"></div></div><b>14.2%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:16.8%;background:#c45911"></div></div><b>6.5%</b></div>
+        </div>
+        <div class="cmp-topic">中东冲突与巴勒斯坦问题</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:18.1%;background:#7b2d26"></div></div><b>7.0%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:2.6%;background:#1f4e79"></div></div><b>1.0%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:4.9%;background:#5c5c5c"></div></div><b>1.9%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:13.5%;background:#c45911"></div></div><b>5.2%</b></div>
+        </div>
+        <div class="cmp-topic">乌克兰战争</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:21.2%;background:#1f4e79"></div></div><b>8.2%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:53.9%;background:#5c5c5c"></div></div><b>20.8%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:16.8%;background:#c45911"></div></div><b>6.5%</b></div>
+        </div>
+        <div class="cmp-topic">海事安全与海洋治理</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:4.7%;background:#7b2d26"></div></div><b>1.8%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:0.8%;background:#1f4e79"></div></div><b>0.3%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:3.4%;background:#c45911"></div></div><b>1.3%</b></div>
+        </div>
+        <div class="cmp-topic">核裁军</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:52.8%;background:#1f4e79"></div></div><b>20.4%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:12.2%;background:#5c5c5c"></div></div><b>4.7%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:3.4%;background:#c45911"></div></div><b>1.3%</b></div>
+        </div>
+        <div class="cmp-topic">非洲和平与安全</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:31.9%;background:#7b2d26"></div></div><b>12.3%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:3.4%;background:#1f4e79"></div></div><b>1.3%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <div class="cmp-topic">修复性正义与反种族主义</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:0.0%;background:#7b2d26"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:1.8%;background:#1f4e79"></div></div><b>0.7%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:17.1%;background:#5c5c5c"></div></div><b>6.6%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:3.4%;background:#c45911"></div></div><b>1.3%</b></div>
+        </div>
+        <div class="cmp-topic">恐怖主义与跨国犯罪</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:0.0%;background:#7b2d26"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:14.5%;background:#1f4e79"></div></div><b>5.6%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <div class="cmp-topic">对古巴制裁与封锁</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:9.1%;background:#7b2d26"></div></div><b>3.5%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:8.5%;background:#1f4e79"></div></div><b>3.3%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:7.3%;background:#5c5c5c"></div></div><b>2.8%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <div class="cmp-topic">海地危机</div>
+        <div class="bars">
+          <div class="barrow"><span class="lab">中国</span><div class="track"><div class="fill" style="width:0.0%;background:#7b2d26"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">美国</span><div class="track"><div class="fill" style="width:0.8%;background:#1f4e79"></div></div><b>0.3%</b></div>
+          <div class="barrow"><span class="lab">俄罗斯</span><div class="track"><div class="fill" style="width:0.0%;background:#5c5c5c"></div></div><b>0.0%</b></div>
+          <div class="barrow"><span class="lab">欧盟</span><div class="track"><div class="fill" style="width:0.0%;background:#c45911"></div></div><b>0.0%</b></div>
+        </div>
+        <figcaption><strong>方法：</strong>百分比是各自发言内部的句子占比，来自同一套模型判断。所有条形都按 38.6% 缩放，也就是中国在联合国改革上的占比，便于放在同一尺度上比较。占比更高不等于句数更多：美国 304 句，俄罗斯 106 句，欧盟 77 句，中国 57 句。</figcaption>
+      </figure>
 
       <h2>五、谁在提及谁：多边会场里的具体争议</h2>
       <p>
