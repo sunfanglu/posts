@@ -1,0 +1,293 @@
+---
+title: "Procedural votes in the UNGA First Committee, 81st session (October 2026): what do they reveal about alignment?"
+author: "Prepared for Fanglu Sun (UN Research Intelligence & Publication Assistant)"
+date: "2026-10-10 (Beijing time)"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: kable
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 9, fig.height = 5.5, dpi = 150)
+library(tidyverse); library(scales); library(knitr)
+# Paths are relative to the project root (one level above /code)
+root <- normalizePath(file.path(dirname(knitr::current_input(dir = TRUE)), ".."))
+dd <- function(...) file.path(root, "data", ...)
+fd <- function(...) file.path(root, "figures", ...)
+dir.create(fd(), showWarnings = FALSE)
+theme_set(theme_minimal(base_size = 12, base_family = "serif") + theme(plot.title.position = "plot", panel.grid.minor = element_blank()))
+pal <- c(Yes = "#2b8cbe", No = "#d7301f", Abstain = "#fdae61", `Not recorded` = "grey80")
+```
+
+# 1. Question and scope
+
+**Empirical question.** On 7 October 2026 the First Committee adopted its programme of work by recorded vote after rejecting a Russian amendment on speaking-time limits. Is a recorded vote on organizational matters unusual, and what does the pattern of support for Russia's procedural positions reveal about alignment — in particular whether China and India behave differently on procedural questions than on substantive ones?
+
+**Data provenance** (all files in `/data`, every row traceable):
+
+* 2026: UN press release GA/DIS/3764 (tallies and named "against"/"abstaining" states), GA/DIS/3762 (5 October debate), UN Transcripts (ASR, *not official*) for meetings 1–3 of the 81st session. Verbatim records A/C.1/81/PV.1–3 were **not yet available** on ODS when checked (10 Oct 2026).
+* Baseline: all First Committee verbatim records (A/C.1/73/PV.x – A/C.1/79/PV.x) retrievable from the UN Official Document System (ODS) API; recorded votes parsed automatically by `code/parse_pv.py` and validated against official totals.
+* Plenary context: Voeten/Bailey–Strezhnev–Voeten dyadic agreement scores (Harvard Dataverse, doi:10.7910/DVN/LEJUQZ, `AgreementScores.csv`, 1946–2024).
+
+# 2. Load and validate data
+
+```{r load}
+items <- read_csv(dd("fc_vote_items_raw.csv"), show_col_types = FALSE)
+votes <- read_csv(dd("fc_votes_long_raw.csv"), show_col_types = FALSE)
+cls   <- read_csv(dd("procedural_classification.csv"), show_col_types = FALSE)
+ref   <- read_csv(dd("country_reference.csv"), show_col_types = FALSE)
+i26   <- read_csv(dd("fc2026_vote_items.csv"), show_col_types = FALSE)
+v26   <- read_csv(dd("fc2026_votes_known.csv"), show_col_types = FALSE)
+voe   <- read_csv(dd("voeten_agreement_pairs_2000_2024.csv"), show_col_types = FALSE)
+
+val <- items %>% count(session, valid) %>% pivot_wider(names_from = valid, values_from = n, values_fill = 0) %>%
+  rename(valid = `1`, failed_validation = `0`)
+kable(val, caption = "Parsed recorded votes per session; 'valid' = parsed country counts equal the official totals printed in the verbatim record")
+items_v <- items %>% filter(valid == 1) %>%
+  left_join(cls, by = "vote_id") %>%
+  mutate(category = replace_na(category, "substantive"))
+votes_v <- votes %>% semi_join(items_v, by = "vote_id") %>% left_join(items_v %>% select(vote_id, year, category), by = "vote_id")
+cat("Validated votes:", nrow(items_v), " | country-vote records:", nrow(votes_v), "\n")
+kable(count(items_v, category), caption = "Validated votes by category")
+```
+
+Session 79 (2024) has only a handful of verbatim records on ODS (the action-phase records are not retrievable), and **no First Committee verbatim records exist on ODS for session 80 (2025)**; the 2025 baseline therefore relies on UN Transcripts (the programme of work was adopted without objection on 3 October 2025, and the 2026 programme of work was adopted without objection on 6 November 2025 under document A/C.1/80/CRP.4).
+
+# 3. Descriptive tallies: the two 2026 votes
+
+```{r tallies2026}
+kable(i26 %>% select(vote_id, object, proposer, vote_requested_by, yes, no, abs, outcome, country_lists_published))
+t26 <- i26 %>% transmute(vote = c("Russian amendment\n(speaking times)", "Programme of work\nA/C.1/81/CRP.1"), Yes = yes, No = no, Abstain = abs,
+                         `Not recorded` = 193 - yes - no - abs) %>%
+  pivot_longer(-vote, names_to = "choice", values_to = "n") %>% mutate(choice = factor(choice, levels = names(pal)))
+g1 <- ggplot(t26, aes(x = vote, y = n, fill = choice)) + geom_col(width = .6) +
+  geom_text(aes(label = n), position = position_stack(vjust = .5), size = 4, family = "serif") +
+  scale_fill_manual(values = pal) + coord_flip() +
+  labs(title = "Figure 1. The two recorded procedural votes in the First Committee, 7 October 2026",
+       subtitle = "Programme of work: against = Burkina Faso, DPRK, Iran, Mali, Nicaragua, Niger, Russia;\nabstaining = Algeria, Central African Republic, China, Congo, India. Amendment: no country lists published yet.",
+       x = NULL, y = "Number of UN member states (193)", fill = NULL,
+       caption = "Source: UN press release GA/DIS/3764; UN Transcripts, 81st session, 3rd meeting. 'Not recorded' = not voting or absent.") +
+  theme(legend.position = "bottom")
+ggsave(fd("fig1_2026_tallies.png"), g1, width = 9.5, height = 4.8, dpi = 200); g1
+```
+
+On the programme of work, `r 135+7+5` states voted; Russia's 7-state "no" coalition combined Russia with Iran, the DPRK, Nicaragua and the three Alliance of Sahel States (AES) members; China and India abstained. The 15 states that backed the Russian amendment are not yet identifiable from published sources.
+
+# 4. Historical baseline: how rare are procedural recorded votes?
+
+```{r baseline}
+proc <- items_v %>% filter(category != "substantive") %>%
+  left_join(votes_v %>% filter(country %in% c("Russian Federation","China","India","United States of America")) %>%
+              select(vote_id, country, vote) %>% pivot_wider(names_from = country, values_from = vote), by = "vote_id") %>%
+  transmute(year, meeting_date, category, description, proposer, yes = parsed_yes, no = parsed_no, abs = parsed_abs,
+            Russia = `Russian Federation`, China, India, USA = `United States of America`)
+p26 <- tibble(year = 2026, meeting_date = "7 October 2026", category = "procedural",
+              description = c("Russian amendment to footnote b of A/C.1/81/CRP.1 (speaking times)", "Adoption of programme of work A/C.1/81/CRP.1 (vote requested by the United States)"),
+              proposer = c("Russian Federation","Chair/Bureau"), yes = c(15,135), no = c(63,7), abs = c(56,5),
+              Russia = c("(not published)","No"), China = c("(not published)","Abstain"), India = c("(not published)","Abstain"), USA = c("(not published)","(Yes or not voting; not published)"))
+proc_all <- bind_rows(proc, p26)
+write_csv(proc_all, file.path(root, "output", "table_procedural_votes_2018_2026.csv"))
+kable(proc_all, caption = "All First Committee procedural/organizational recorded votes found, 2018–2026")
+share <- items_v %>% group_by(year) %>% summarise(all_recorded = n(), procedural_core = sum(category == "procedural"),
+                                                  machinery_procedural = sum(category == "machinery_procedural"))
+kable(share, caption = "Validated recorded votes per year (2024: only organizational-phase records retrievable)")
+```
+
+```{r pow}
+pow <- tribble(~year, ~session, ~programme_of_work_decision, ~source,
+  2018, 73, "Adopted without a vote (separate recorded vote on organizational draft decision CRP.3)", "A/C.1/73/PV.1",
+  2019, 74, "Not adopted at 1st meeting; adopted 8 Oct 2019 without a vote after visa dispute (recorded vote on Iran's motion to adjourn)", "A/C.1/74/PV.2; GA/DIS press list",
+  2020, 75, "Adopted without a vote", "A/C.1/75/PV.1",
+  2021, 76, "Adopted without a vote", "A/C.1/76/PV.1",
+  2022, 77, "Adopted without a vote", "A/C.1/77/PV.1",
+  2023, 78, "Adopted without a vote", "A/C.1/78/PV.1",
+  2024, 79, "Adopted without a vote (Russian motion to suspend rejected by recorded vote the next meeting)", "A/C.1/79/PV.1, PV.2",
+  2025, 80, "Adopted without objection, 3 Oct 2025", "UN Transcripts c1/80/1 (no ODS verbatim)",
+  2026, 81, "FIRST RECORDED VOTE on the programme of work in the series (135-7-5), after a Russian amendment was rejected (15-63-56)", "GA/DIS/3764; UN Transcripts c1/81/3")
+kable(pow, caption = "How the programme of work was adopted, 2018–2026")
+write_csv(pow, file.path(root, "output", "table_programme_of_work_2018_2026.csv"))
+```
+
+```{r fig2}
+rus_init <- c("A/C.1/73/PV.19#1","A/C.1/74/PV.2#1","A/C.1/74/PV.26#9","A/C.1/74/PV.27#1","A/C.1/75/PV.13#1","A/C.1/75/PV.15#17","A/C.1/75/PV.15#18","A/C.1/79/PV.2#1")
+lab <- c("2018 accept late INF draft","2019 Iran motion to adjourn (visas)","2019 amendment L.62 (UNDC/visas)","2019 L.57/Rev.1 venue/visas",
+         "2020 no-competence motion (space)","2020 L.48 UNDC session","2020 amendment L.79 (UNDC)","2024 motion to suspend (visas)")
+f2 <- items_v %>% filter(vote_id %in% rus_init) %>% mutate(label = lab[match(vote_id, rus_init)]) %>%
+  select(label, Yes = parsed_yes, No = parsed_no, Abstain = parsed_abs) %>%
+  bind_rows(tibble(label = "2026 amendment to CRP.1 (speaking times)", Yes = 15, No = 63, Abstain = 56)) %>%
+  mutate(label = factor(label, levels = rev(label))) %>% pivot_longer(-label, names_to = "choice", values_to = "n") %>%
+  mutate(choice = factor(choice, levels = c("Yes","Abstain","No")))
+g2 <- ggplot(f2, aes(x = label, y = n, fill = choice)) + geom_col(width = .7) +
+  geom_text(aes(label = n), position = position_stack(vjust = .5), size = 3.3, family = "serif") +
+  scale_fill_manual(values = pal, labels = c("Yes (with Russia's proposal)","Abstain","No")) + coord_flip() +
+  labs(title = "Figure 2. Russian-initiated or Russian-backed procedural proposals in the First Committee, 2018–2026",
+       subtitle = "Support never exceeded 34 states; a large abstaining bloc is the norm, not the exception",
+       x = NULL, y = "Number of states", fill = NULL,
+       caption = "Sources: A/C.1/73/PV.19; A/C.1/74/PV.2, PV.26, PV.27; A/C.1/75/PV.13, PV.15; A/C.1/79/PV.2; GA/DIS/3764 (2026).") +
+  theme(legend.position = "bottom")
+ggsave(fd("fig2_russian_procedural_proposals_2018_2026.png"), g2, width = 10, height = 6, dpi = 200); g2
+```
+
+```{r rus_support}
+sup <- votes_v %>% filter(vote_id %in% rus_init) %>% count(country, vote) %>% pivot_wider(names_from = vote, values_from = n, values_fill = 0) %>%
+  mutate(`Not voting` = length(rus_init) - Yes - No - Abstain) %>% arrange(desc(Yes), desc(Abstain))
+kable(sup %>% filter(country %in% c("China","India","Belarus","Iran (Islamic Republic of)","Syrian Arab Republic","Nicaragua","Cuba","Democratic People’s Republic of Korea","Venezuela (Bolivarian Republic of)","Mali","Burkina Faso","Niger","Algeria","Brazil","South Africa","Egypt","Indonesia","Kazakhstan","Viet Nam")),
+      caption = "How selected states voted on the 8 Russian-initiated or Russian-backed procedural proposals, 2018–2024 (2026 amendment lists not published)")
+write_csv(sup, file.path(root, "output", "table_support_for_russian_procedural_initiatives_2018_2024.csv"))
+cat("States voting Yes at least once:", sum(sup$Yes > 0), "; at least 5 times:", sum(sup$Yes >= 5), "\n")
+print(sup %>% filter(Yes >= 5) %>% pull(country))
+```
+
+# 5. Pairwise agreement: procedural vs substantive
+
+Agreement index (Lijphart 1963, the same construction as Voeten's dyadic scores): 1 = identical vote, 0.5 = one abstains and the other votes yes/no, 0 = opposite votes; votes where either state did not vote are dropped. "Identical" is the share of exactly matching votes.
+
+```{r pairs}
+ag <- function(a, b) case_when(a == b ~ 1, a == "Abstain" | b == "Abstain" ~ .5, TRUE ~ 0)
+pairs <- tribble(~c1, ~c2,
+  "China","Russian Federation", "India","Russian Federation", "China","India", "Belarus","Russian Federation",
+  "Iran (Islamic Republic of)","Russian Federation", "United States of America","Russian Federation",
+  "China","United States of America", "India","United States of America", "Brazil","Russian Federation", "South Africa","Russian Federation")
+wide <- votes_v %>% select(vote_id, country, vote) %>% pivot_wider(names_from = country, values_from = vote)
+cat_of <- items_v %>% select(vote_id, category, year)
+pair_tab <- pmap_dfr(pairs, function(c1, c2) {
+  wide %>% select(vote_id, a = all_of(c1), b = all_of(c2)) %>% filter(!is.na(a), !is.na(b)) %>%
+    left_join(cat_of, by = "vote_id") %>%
+    mutate(cat2 = recode(category, substantive = "Substantive FC votes 2018-23", procedural = "Core procedural FC votes 2018-24 (n<=7)",
+                         machinery_procedural = "UNDC/visa procedural decisions 2019-20 (n=11)")) %>%
+    group_by(cat2) %>% summarise(n = n(), agreement = mean(ag(a, b)), identical = mean(a == b), .groups = "drop") %>%
+    mutate(pair = paste(c1, "–", c2))
+})
+ukey <- function(a, b) paste(pmin(a, b), pmax(a, b))
+pl <- voe %>% filter(year >= 2018) %>% mutate(key = ukey(country1, country2)) %>% group_by(key) %>% summarise(agreement = mean(agree), n = n(), .groups = "drop") %>%
+  mutate(cat2 = "UNGA plenary, all recorded votes 2018-24 (Voeten; mean of yearly scores)")
+pair_tab <- pair_tab %>% mutate(key = ukey(str_split_fixed(pair, " – ", 2)[,1], str_split_fixed(pair, " – ", 2)[,2]))
+pair_all <- bind_rows(pair_tab, pl %>% inner_join(pair_tab %>% distinct(key, pair), by = "key")) %>% select(pair, cat2, n, agreement, identical)
+write_csv(pair_all, file.path(root, "output", "table_pairwise_agreement.csv"))
+kable(pair_all %>% arrange(pair, cat2) %>% mutate(across(c(agreement, identical), ~round(., 3))), caption = "Pairwise agreement by vote type")
+short <- function(x) x %>% str_replace_all("Russian Federation","Russia") %>% str_replace_all("United States of America","USA") %>% str_replace_all("Iran \\(Islamic Republic of\\)","Iran")
+g3 <- pair_all %>% mutate(pair = short(pair), pair = fct_reorder(pair, agreement, .fun = function(x) x[1])) %>%
+  ggplot(aes(x = agreement, y = pair, colour = cat2, shape = cat2)) + geom_point(size = 3.4, alpha = .9) +
+  scale_x_continuous(limits = c(0, 1), labels = percent) +
+  scale_colour_manual(values = c("#d7301f", "#2b8cbe", "grey40", "#fdae61")) +
+  labs(title = "Figure 3. China votes with Russia on procedure even more than on substance; India does not",
+       subtitle = "Lijphart agreement index (1 = identical, 0.5 = one abstains, 0 = opposite)",
+       x = "Agreement", y = NULL, colour = NULL, shape = NULL,
+       caption = "Sources: First Committee verbatim records A/C.1/73–79/PV.x (validated recorded votes); Voeten dyadic agreement scores (Harvard Dataverse).") +
+  theme(legend.position = "bottom", legend.direction = "vertical")
+ggsave(fd("fig3_pairwise_agreement.png"), g3, width = 9.5, height = 6.5, dpi = 200); g3
+```
+
+```{r china_india_detail}
+sel_c <- c("Russian Federation","China","India","Belarus","Iran (Islamic Republic of)","Syrian Arab Republic","Cuba","Nicaragua","Democratic People’s Republic of Korea","Mali","Burkina Faso","Niger","Algeria","Brazil","South Africa","Egypt","Indonesia","United States of America")
+detail <- items_v %>% filter(category != "substantive") %>% select(vote_id, year, description) %>% crossing(country = sel_c) %>%
+  left_join(votes_v %>% filter(country %in% c("Russian Federation","China","India","Belarus","Iran (Islamic Republic of)","Syrian Arab Republic","Cuba","Nicaragua","Democratic People’s Republic of Korea","Mali","Burkina Faso","Niger","Algeria","Brazil","South Africa","Egypt","Indonesia","United States of America")) %>% select(vote_id, country, vote), by = c("vote_id","country"))
+d26 <- tibble(vote_id = "FC81_CRP1", year = 2026, description = "Adoption of programme of work A/C.1/81/CRP.1") %>%
+  crossing(country = unique(detail$country)) %>% left_join(v26 %>% select(vote_id, country, vote), by = c("vote_id","country")) %>%
+  mutate(vote = replace_na(vote, "Yes or not voting (unpublished)"))
+lv <- c("Yes","Abstain","No","Not voting","Yes or not voting (unpublished)")
+heat <- bind_rows(detail, d26) %>% mutate(vote = replace_na(vote, "Not voting"),
+  short = paste0(year, " ", str_trunc(description, 48)), country = short(country) %>% str_replace("Democratic People’s Republic of Korea","DPRK") %>% str_replace("Syrian Arab Republic","Syria"))
+ord <- bind_rows(detail, d26) %>% distinct(vote_id, year, description) %>% arrange(year, vote_id) %>% mutate(short = paste0(year, " ", str_trunc(description, 48)))
+heat <- heat %>% mutate(short = factor(short, levels = unique(ord$short)), vote = factor(vote, levels = lv),
+  country = factor(country, levels = rev(c("Russia","Belarus","Iran","DPRK","Syria","Nicaragua","Cuba","Mali","Burkina Faso","Niger","China","India","Algeria","Egypt","Indonesia","Brazil","South Africa","USA"))))
+g4 <- ggplot(heat, aes(x = short, y = country, fill = vote)) + geom_tile(colour = "white") +
+  scale_fill_manual(values = c(Yes = "#2b8cbe", Abstain = "#fdae61", No = "#d7301f", `Not voting` = "grey55", `Yes or not voting (unpublished)` = "#c6dbef"), drop = FALSE) +
+  labs(title = "Figure 4. Who stood where on procedural votes, 2018–2026", subtitle = "Votes are as cast on each motion/decision (a 'Yes' on the 2020 division motion was a vote against Russia's position)",
+       x = NULL, y = NULL, fill = NULL, caption = "Sources: A/C.1/73–79/PV.x; GA/DIS/3764 (2026: only 'against' and 'abstaining' published).") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 7.5), legend.position = "bottom")
+ggsave(fd("fig4_procedural_heatmap.png"), g4, width = 12, height = 7.5, dpi = 200); g4
+```
+
+# 6. Regional and coalition breakdowns
+
+For each procedural vote: does a bloc member vote the same way as Russia, the opposite way, abstain, or not vote? Membership: UN regional groups; NAM (2026 list; Chile counted as member until 2025, South Sudan from 2024); EU-27 (UK counted only as non-EU; votes before 31 Jan 2020 for the UK are excluded from the EU bloc for simplicity, i.e., EU-27 used throughout); AES = Mali, Burkina Faso, Niger.
+
+```{r blocs}
+ref2 <- ref %>% mutate(bloc_regional = un_regional_group)
+rus <- votes_v %>% filter(country == "Russian Federation") %>% select(vote_id, rus = vote)
+procids <- items_v %>% filter(category != "substantive") %>% pull(vote_id)
+member_rows <- function(bloc, members, ids, nam_adj = FALSE) {
+  crossing(vote_id = ids, country = members) %>% left_join(votes_v %>% select(vote_id, country, vote), by = c("vote_id","country")) %>%
+    left_join(rus, by = "vote_id") %>% left_join(items_v %>% select(vote_id, year), by = "vote_id") %>% mutate(bloc = bloc)
+}
+nam_hist <- c(ref$country[ref$nam_2026 == 1], "Chile")
+blocs <- bind_rows(
+  member_rows("Mali, Burkina Faso, Niger (AES since 2023)", ref$country[ref$aes_sahel == 1], procids),
+  member_rows("NAM", nam_hist, procids) %>% filter(!(country == "South Sudan" & year < 2024)),
+  member_rows("EU-27 member states", ref$country[ref$eu27 == 1], procids),
+  member_rows("African Group", ref$country[ref$un_regional_group == "African Group"], procids),
+  member_rows("Asia-Pacific Group", ref$country[ref$un_regional_group == "Asia and the Pacific Group"], procids),
+  member_rows("GRULAC", ref$country[str_detect(ref$un_regional_group, "GRULAC")], procids),
+  member_rows("Eastern European Group (excl. Russia)", setdiff(ref$country[ref$un_regional_group == "Eastern European Group"], "Russian Federation"), procids),
+  member_rows("WEOG (+US)", ref$country[str_detect(ref$un_regional_group, "WEOG")], procids)) %>%
+  mutate(rel = case_when(is.na(vote) ~ "Not voting", vote == rus ~ "Same as Russia", vote == "Abstain" ~ "Abstain", rus == "Abstain" ~ "Yes/No while Russia abstained", TRUE ~ "Opposite to Russia"))
+bt <- blocs %>% count(bloc, rel) %>% group_by(bloc) %>% mutate(share = n / sum(n)) %>% ungroup()
+kable(bt %>% select(-n) %>% pivot_wider(names_from = rel, values_from = share, values_fill = 0) %>% mutate(across(-bloc, ~percent(., .1))),
+      caption = "Bloc members' votes relative to Russia on procedural votes 2018–2024 (pooled member-votes)")
+write_csv(bt, file.path(root, "output", "table_bloc_relative_to_russia.csv"))
+g5 <- bt %>% mutate(rel = factor(rel, levels = c("Same as Russia","Abstain","Yes/No while Russia abstained","Opposite to Russia","Not voting"))) %>%
+  ggplot(aes(x = share, y = fct_rev(bloc), fill = rel)) + geom_col() +
+  scale_fill_manual(values = c(`Same as Russia` = "#7a0177", Abstain = "#fdae61", `Yes/No while Russia abstained` = "#bdbdbd", `Opposite to Russia` = "#2b8cbe", `Not voting` = "grey85")) +
+  scale_x_continuous(labels = percent) +
+  labs(title = "Figure 5. Procedural votes 2018–2024: bloc members relative to Russia's vote", subtitle = "Pooled member-votes, 18 validated procedural votes. Outside Europe, abstention and non-participation dominate; EU/WEOG members mostly vote against Russia",
+       x = "Share of member-votes", y = NULL, fill = NULL, caption = "Sources: A/C.1/73–79/PV.x; group membership as documented in data/country_reference.csv") +
+  theme(legend.position = "bottom")
+ggsave(fd("fig5_blocs_relative_to_russia.png"), g5, width = 10, height = 5.5, dpi = 200); g5
+```
+
+```{r aes_2026}
+b26 <- ref %>% left_join(v26 %>% select(country, vote), by = "country") %>% mutate(vote = replace_na(vote, "Yes or not voting"))
+kable(bind_rows(
+  b26 %>% filter(aes_sahel == 1) %>% count(vote) %>% mutate(bloc = "AES"),
+  b26 %>% filter(nam_2026 == 1) %>% count(vote) %>% mutate(bloc = "NAM (2026)"),
+  b26 %>% filter(eu27 == 1) %>% count(vote) %>% mutate(bloc = "EU-27"),
+  b26 %>% filter(un_regional_group == "African Group") %>% count(vote) %>% mutate(bloc = "African Group")) %>% select(bloc, vote, n),
+  caption = "2026 programme-of-work vote: what can be said about blocs from published lists")
+```
+
+**EU cohesion.** On every validated procedural vote, did all EU-27 member states that voted cast the same vote?
+
+```{r eu}
+eu <- votes_v %>% filter(country %in% ref$country[ref$eu27 == 1]) %>% group_by(vote_id, category) %>%
+  summarise(n_voting = n(), modal_share = max(table(vote)) / n(), .groups = "drop")
+kable(eu %>% group_by(category) %>% summarise(votes = n(), mean_modal_share = mean(modal_share), fully_cohesive = mean(modal_share == 1)),
+      caption = "EU-27 member-state cohesion (share voting with the EU modal choice); similarity is not evidence of formal EU coordination")
+```
+
+# 7. Plenary context (Voeten)
+
+```{r voeten}
+vs <- voe %>% filter(paste(country1, country2) %in% c("China Russian Federation","India Russian Federation","China India","United States of America Russian Federation","China United States of America","India United States of America")) %>%
+  mutate(pair = short(paste(country1, "–", country2)))
+g6 <- ggplot(vs, aes(year, agree, colour = pair)) + geom_line(linewidth = 1) + geom_point(size = 1.4) +
+  scale_y_continuous(labels = percent, limits = c(0, 1)) +
+  labs(title = "Figure 6. UNGA plenary voting agreement, 2000–2024", subtitle = "China–Russia c. 78–85% and India–Russia c. 60–70% in 2020–24; US–Russia c. 24–34%",
+       x = NULL, y = "Agreement (Lijphart index)", colour = NULL, caption = "Source: Bailey, Strezhnev & Voeten, UNGA Ideal Points dataset, AgreementScores.csv (Harvard Dataverse, doi:10.7910/DVN/LEJUQZ).") +
+  theme(legend.position = "right")
+ggsave(fd("fig6_voeten_plenary_agreement.png"), g6, width = 10, height = 5.2, dpi = 200); g6
+kable(vs %>% filter(year >= 2020) %>% select(pair, year, agree) %>% mutate(agree = round(agree, 3)) %>% pivot_wider(names_from = year, values_from = agree))
+```
+
+# 8. Limitations and alternative explanations
+
+* **2026 country-level data are incomplete.** Only the 7 "against" and 5 "abstaining" states on CRP.1 are named; the 135 "in favour" and every country position on the amendment are not yet published (A/C.1/81/PV.3 not on ODS as of 10 Oct 2026). 46 member states did not vote on CRP.1.
+* **Small N.** 18 validated procedural votes 2018–2024 (8 Russian-initiated/backed), plus 2 in 2026. Agreement on procedural votes rests on few observations and is sensitive to the visa-linked UNDC cluster of 2019–2020.
+* **Coverage gaps.** 22 of 651 parsed votes failed validation and were dropped (all substantive). Session 79 action-phase and all session 80 verbatim records are not on ODS. Procedural votes outside the parsed PVs (2024 action phase, 2025) could exist; UN Transcripts for 2025 meetings show none, but several 2025 transcripts are missing.
+* **Abstention as signalling.** An abstention can mean sympathy without cost, hedging, instructions not received, or objection to the *manner* (a vote) rather than the content. China spoke for Russia's position on 5 October but abstained on 7 October; the Chair did not allow explanations of vote, so motives are not on record.
+* **Procedural salience.** Speaking-time limits matter more to large delegations with long statements and to small delegations struggling to cover meetings; voting may reflect these interests rather than geopolitical alignment.
+* **Voting together ≠ coordination.** Identical votes of the AES states or of EU members do not prove coordination; the EU is an observer and does not vote in the Committee.
+* **Correlation ≠ causation.** No claim is made that Russia's lobbying caused any vote.
+
+# 9. Reproduction
+
+1. `python3 code/parse_pv.py data/raw_pv data` (needs poppler `pdftotext`/`pdfinfo`) regenerates `fc_vote_items_raw.csv` and `fc_votes_long_raw.csv` from the stored PDFs (downloaded from `https://documents.un.org/api/symbol/access?s=<symbol>&l=en&t=pdf`).
+2. `python3 code/build_ref.py` and `python3 code/make_2026_and_classification.py` rebuild reference and hand-coded tables.
+3. `Rscript -e 'rmarkdown::render("code/analysis.Rmd", output_dir = "output")'`.
+
+```{r session}
+sessionInfo()
+```
