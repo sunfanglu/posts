@@ -1,0 +1,353 @@
+---
+title: "Methods update: the Alignment (A) index and clique partitioning applied to First Committee procedural and substantive votes, 2018–2026"
+author: "Prepared for Fanglu Sun (UN Research Intelligence & Publication Assistant)"
+date: "2026-10-12 (Beijing time)"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: kable
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 9, fig.height = 5.5, dpi = 150)
+library(tidyverse); library(scales); library(knitr); library(igraph)
+root <- normalizePath(file.path(dirname(knitr::current_input(dir = TRUE)), ".."))
+dd <- function(...) file.path(root, "data", ...); fd <- function(...) file.path(root, "figures", ...); od <- function(...) file.path(root, "output", ...)
+source(file.path(root, "code", "aindex_functions.R"))
+theme_set(theme_minimal(base_size = 12, base_family = "serif") + theme(plot.title.position = "plot", panel.grid.minor = element_blank()))
+short <- function(x) x %>% str_replace_all(c("Russian Federation" = "Russia", "United States of America" = "USA", "Iran \\(Islamic Republic of\\)" = "Iran",
+  "Democratic People’s Republic of Korea" = "DPRK", "Syrian Arab Republic" = "Syria", "Venezuela \\(Bolivarian Republic of\\)" = "Venezuela",
+  "United Kingdom of Great Britain and Northern Ireland" = "UK", "Lao People’s Democratic Republic" = "Laos", "Bolivia \\(Plurinational State of\\)" = "Bolivia",
+  "Netherlands \\(Kingdom of the\\)" = "Netherlands", "Central African Republic" = "CAR", "Republic of Korea" = "ROK"))
+set.seed(20261012)
+```
+
+This file **adds** to the analysis of 10 October 2026 (`code/analysis.Rmd`, `output/analysis.html`); no earlier file is modified. All new outputs carry the prefix `aindex_` (tables) or `fig7`–`fig10` (figures).
+
+# 1. The method, as defined by Benati & Capurri (2026)
+
+Source: Stefano Benati & Agnese Capurri, "The Alignment index and its application to voting at the United Nations General Assembly", *Quality & Quantity* 60 (2026): 16075–16107, [doi:10.1007/s11135-026-02814-x](https://doi.org/10.1007/s11135-026-02814-x) (open access, CC BY 4.0).
+
+* Votes are coded *X* = 1 (Yes), 2 (Abstain), 3 (No). **S-index** (Signorino & Ritter; Eq. 1): $s_{ij} = 1 - \frac{1}{|K_{ij}|}\sum_{k\in K_{ij}}|x_{ik}-x_{jk}|$, over the set $K_{ij}$ of votes in which both states voted; range −1 to 1.
+* **Expected S under independent voting** (Eq. 4): $s^0_{ij} = 1 - 1\cdot(p_{YA}+p_{AN}+p_{AY}+p_{NA}) - 2\cdot(p_{YN}+p_{NY})$ with $p_{uv} = p_{i,u}\,p_{j,v}$ from each state's marginal vote shares (Eq. 3).
+* **Alignment index** (Eq. 5): $a_{ij} = s_{ij} - s^0_{ij}$. Zero separates aligned (>0) from misaligned (<0) pairs. **Generalised index** (Eq. 15): $a^{\lambda}_{ij} = s_{ij} - \lambda s^0_{ij}$ (λ = 0 gives S, λ = 1 gives A).
+* **Clique partitioning (CP)** (Eqs. 8–12): choose the partition that maximises the sum of $a_{ij}$ over all pairs placed in the same cluster, subject to transitivity; the number of clusters is not fixed and outliers emerge as singletons. The authors discard clusters of ≤ 4 states as uninformative (*k\**) and measure **cohesion** as the mean $a_{ij}$ within a cluster.
+* **Absences**: main specification treats absence as missing (their M1); sensitivity check codes absence as abstention (M2).
+
+**Implementation choices that the paper leaves open (documented here).** (i) Eq. 3 estimates marginals over all votes a state cast ($K_i$), while Table 1 and the worked example assume $K_i = K_j = K_{ij}$. Our main specification uses marginals on $K_{ij}$ ("joint"), so that A = 0 exactly when the observed joint table equals the product of its own margins; the literal Eq. 3 version ("own") is reported as a robustness check. The two differ only when absences are frequent — which they are on procedural votes. (ii) The authors' code is not public (CRAN release announced), so the CP model is solved with a documented heuristic (random restarts + Louvain-style local moving and cluster aggregation + iterated local search), validated against the exact integer programme (Eqs. 8–12, solved with `lpSolve`) in §2.
+
+# 2. Verification of the implementation
+
+```{r verify}
+tab <- matrix(c(120,10,40, 10,10,10, 40,0,0), 3, byrow = TRUE)          # Sect. 3.2 worked example (rows r, columns c)
+a <- b <- c(); for (u in 1:3) for (v in 1:3) { a <- c(a, rep(u, tab[u, v])); b <- c(b, rep(v, tab[u, v])) }
+ex1 <- pair_index(a, b)
+ex2 <- pair_index(c(rep(1, 80), rep(3, 20)), c(rep(1, 60), rep(3, 20), rep(1, 20)))   # Sect. 3.1 example
+kable(rbind(`Worked example, Sect. 3.2 (paper: S = 0.206, S0 = 0.280, A = -0.074)` = ex1,
+            `Example, Sect. 3.1 (paper: S = 0.2, A = -0.16)` = ex2) %>% round(3),
+      caption = "Our functions reproduce the paper's numerical examples (differences in the third decimal are the paper's rounding of cell shares)")
+# Vectorised matrix version equals pairwise version
+Xt <- matrix(sample(c(1,1,1,1,2,3,NA), 300 * 10, TRUE), 300, 10)
+Mt <- amatrix(Xt); err <- max(sapply(1:9, function(i) sapply((i+1):10, function(j) abs(Mt$A[i,j] - pair_index(Xt[,i], Xt[,j])["A"]))) %>% unlist())
+cat("Max |matrix A - pairwise A| on simulated data:", signif(err, 3), "\n")
+# Heuristic CP vs exact ILP on 30 random signed instances (n = 12-18)
+val <- map_dfr(1:30, function(s) { set.seed(s); n <- sample(12:18, 1); W <- matrix(rnorm(n*n), n); W <- (W + t(W))/2; diag(W) <- 0
+  dimnames(W) <- list(1:n, 1:n); ex <- cp_exact(W); h <- cp_heuristic(W, 30, 30, seed = s)
+  tibble(n = n, exact = ex$objective, heuristic = h$objective, same_optimum = abs(ex$objective - h$objective) < 1e-6) })
+cat("Heuristic reached the exact ILP optimum in", sum(val$same_optimum), "of", nrow(val), "random instances\n")
+```
+
+# 3. Data
+
+```{r data}
+items <- read_csv(dd("fc_vote_items_raw.csv"), show_col_types = FALSE)
+votes <- read_csv(dd("fc_votes_long_raw.csv"), show_col_types = FALSE)
+cls   <- read_csv(dd("procedural_classification.csv"), show_col_types = FALSE)
+ref   <- read_csv(dd("country_reference.csv"), show_col_types = FALSE)
+v26   <- read_csv(dd("fc2026_votes_known.csv"), show_col_types = FALSE)
+plen  <- read_csv(dd("plenary_unvotes_2018_2019.csv"), show_col_types = FALSE)
+items_v <- items %>% filter(valid == 1) %>% left_join(cls, by = "vote_id") %>% mutate(category = replace_na(category, "substantive"))
+votes_v <- votes %>% semi_join(items_v, by = "vote_id")
+members <- sort(ref$country)
+make_X <- function(long, ids, m2 = FALSE) {
+  X <- long %>% filter(vote_id %in% ids) %>% mutate(x = code3(vote)) %>% select(vote_id, country, x) %>%
+    pivot_wider(names_from = country, values_from = x)
+  X <- X[match(ids, X$vote_id), ]; M <- as.matrix(X[, -1, drop = FALSE]); miss <- setdiff(members, colnames(M))
+  if (length(miss)) M <- cbind(M, matrix(NA, nrow(M), length(miss), dimnames = list(NULL, miss)))
+  M <- M[, members, drop = FALSE]; rownames(M) <- ids; if (m2) M[is.na(M)] <- 2; M
+}
+ids_P18 <- items_v %>% filter(category != "substantive") %>% pull(vote_id)
+ids_SUB <- items_v %>% filter(category == "substantive") %>% pull(vote_id)
+v26l <- v26 %>% select(vote_id, country, vote)
+X <- list(
+  P18 = make_X(votes_v, ids_P18),
+  P26 = rbind(make_X(votes_v, ids_P18), make_X(v26l, "FC81_CRP1")),
+  SUB = make_X(votes_v, ids_SUB),
+  PLEN = make_X(plen, unique(plen$vote_id)))
+# Hypothetical bound for 2026: every state not named 'against'/'abstaining' coded Yes (in reality 46 of them did not vote)
+x26b <- make_X(v26l, "FC81_CRP1"); x26b[is.na(x26b)] <- 1
+X$P26B <- rbind(make_X(votes_v, ids_P18), x26b)
+# M2 versions: absence coded as abstention
+X2 <- list(P18 = make_X(votes_v, ids_P18, TRUE), SUB = make_X(votes_v, ids_SUB, TRUE), PLEN = make_X(plen, unique(plen$vote_id), TRUE))
+lab_ds <- c(P18 = "FC procedural 2018–24 (18 votes)", P26 = "FC procedural 2018–26 (+ CRP.1, published positions only)",
+            P26B = "FC procedural 2018–26 (+ CRP.1, unnamed states coded Yes: hypothetical bound)",
+            SUB = "FC substantive 2018–23 (611 votes)", PLEN = "UNGA plenary 2018–19 (185 roll calls)")
+min_n <- c(P18 = 8, P26 = 8, P26B = 8, SUB = 100, PLEN = 50)
+kable(tibble(dataset = names(X), description = lab_ds[names(X)], votes = map_int(X, nrow),
+             states_meeting_min = map_int(names(X), ~ sum(colSums(!is.na(X[[.x]])) >= min_n[.x])), min_votes_cast = min_n[names(X)]),
+      caption = "Vote sets. Pairs are scored only when both states voted together at least `min_votes_cast` times; CP uses states that cast at least that many votes")
+```
+
+The plenary set comes from the CRAN package `unvotes` 0.3.0 (Voeten, Strezhnev & Bailey's roll-call data, which the package redistributes; it ends in December 2019 and drops absences). Raw plenary roll calls for 2020–2024 are not reachable from the box: the Harvard Dataverse handle hdl:1902.1/12379 now resolves to the *Ideal Points* dataset, which holds only dyadic agreement scores; the UN Digital Library voting data are behind a bot challenge. So the A-index can be computed for plenary votes in 2018–19 only, while the earlier Lijphart comparison used the 2018–24 dyadic scores.
+
+# 4. Pairwise A vs. the earlier agreement scores
+
+```{r pairs}
+pairs <- tribble(~c1, ~c2,
+  "China","Russian Federation", "India","Russian Federation", "China","India", "Belarus","Russian Federation",
+  "Iran (Islamic Republic of)","Russian Federation", "Democratic People’s Republic of Korea","Russian Federation", "Nicaragua","Russian Federation",
+  "Syrian Arab Republic","Russian Federation", "Algeria","Russian Federation", "Mali","Russian Federation", "Niger","Russian Federation",
+  "Brazil","Russian Federation", "South Africa","Russian Federation", "United States of America","Russian Federation",
+  "China","United States of America", "India","United States of America")
+boot_ci <- function(a, b, R = 1000) { ok <- which(!is.na(a) & !is.na(b)); if (length(ok) < 3) return(c(NA, NA))
+  bs <- replicate(R, { k <- sample(ok, length(ok), TRUE); pair_index(a[k], b[k])["A"] }); quantile(bs, c(.025, .975), na.rm = TRUE) }
+pt <- map_dfr(c("P18","P26","SUB","PLEN"), function(ds) pmap_dfr(pairs, function(c1, c2) {
+  a <- X[[ds]][, c1]; b <- X[[ds]][, c2]; j <- pair_index(a, b, "joint"); o <- pair_index(a, b, "own")
+  m2 <- if (ds %in% names(X2)) pair_index(X2[[ds]][, c1], X2[[ds]][, c2])["A"] else NA
+  ci <- if (j["n"] >= 3) boot_ci(a, b) else c(NA, NA)
+  tibble(dataset = ds, pair = short(paste(c1, "–", c2)), n = j["n"], lijphart = j["lijphart"], S = j["S"], A = j["A"],
+         A_lo = ci[1], A_hi = ci[2], A_own_marginals = o["A"], A_M2_absent_as_abstain = m2) }))
+write_csv(pt, od("aindex_table_pairs.csv"))
+kable(pt %>% mutate(across(lijphart:A_M2_absent_as_abstain, ~ round(., 3))), caption = "Pairwise Lijphart agreement, S-index and A-index (95% bootstrap interval over votes, 1,000 resamples) by vote set")
+```
+
+```{r rankings}
+rk <- map_dfr(c("P18","P26","SUB","PLEN"), function(ds) { M <- amatrix(X[[ds]], min_n = min_n[ds]); a <- M$A["Russian Federation", ]
+  L <- sapply(members, function(cn) pair_index(X[[ds]][, "Russian Federation"], X[[ds]][, cn])["lijphart"]); L[M$n["Russian Federation", ] < min_n[ds]] <- NA
+  tibble(dataset = ds, country = members, A = a, lijphart = L) %>% filter(country != "Russian Federation", !is.na(A)) %>%
+    mutate(rank_A = rank(-A, ties.method = "min"), rank_lijphart = rank(-lijphart, ties.method = "min"), partners = n()) })
+write_csv(rk, od("aindex_table_partners_of_russia.csv"))
+kable(rk %>% filter(country %in% c("China","India","Belarus","Iran (Islamic Republic of)","Democratic People’s Republic of Korea","Nicaragua","Syrian Arab Republic","Algeria","Mali","Niger","Burkina Faso","United States of America")) %>%
+        mutate(country = short(country), across(c(A, lijphart), ~ round(., 3))) %>% arrange(dataset, rank_A),
+      caption = "Where selected states rank among Russia's partners (1 = most aligned with Russia)")
+pct_pairs <- map_dfr(c("P18","SUB","PLEN"), function(ds) { M <- amatrix(X[[ds]], min_n = min_n[ds])$A; v <- M[upper.tri(M)]; v <- v[!is.na(v)]
+  tibble(dataset = ds, pairs_scored = length(v), share_A_positive = mean(v > 0), median_A = median(v),
+         China_Russia_A = M["China","Russian Federation"], China_Russia_percentile = mean(v < M["China","Russian Federation"])) })
+kable(pct_pairs %>% mutate(across(-c(dataset, pairs_scored), ~ round(., 3))), caption = "Distribution of A across all scored pairs")
+```
+
+```{r fig7, fig.height=7}
+f7 <- pt %>% filter(dataset %in% c("P18","SUB","PLEN")) %>% select(dataset, pair, `Lijphart agreement (earlier)` = lijphart, `A-index (Benati & Capurri)` = A, A_lo, A_hi) %>%
+  pivot_longer(c(`Lijphart agreement (earlier)`, `A-index (Benati & Capurri)`), names_to = "measure", values_to = "value") %>%
+  mutate(A_lo = if_else(measure == "A-index (Benati & Capurri)", A_lo, NA_real_), A_hi = if_else(measure == "A-index (Benati & Capurri)", A_hi, NA_real_),
+         dataset = factor(lab_ds[dataset], levels = lab_ds[c("P18","SUB","PLEN")]),
+         pair = factor(pair, levels = rev(unique(pt$pair))))
+g7 <- ggplot(f7, aes(x = value, y = pair, colour = measure, shape = measure)) +
+  geom_vline(xintercept = 0, colour = "grey40", linewidth = .4) +
+  geom_errorbarh(aes(xmin = A_lo, xmax = A_hi), height = 0, alpha = .5, na.rm = TRUE) + geom_point(size = 2.6, na.rm = TRUE) +
+  facet_wrap(~ dataset, nrow = 1) + scale_colour_manual(values = c("#7a0177", "grey55")) + scale_x_continuous(limits = c(-1, 1)) +
+  labs(title = "Figure 7. Raw agreement versus chance-corrected alignment (A-index), selected pairs",
+       subtitle = "A = observed similarity minus similarity expected under independent voting; 0 separates aligned from misaligned pairs.\nLines: 95% bootstrap intervals for A (resampling votes). Pairs with too few joint votes are omitted.",
+       x = NULL, y = NULL, colour = NULL, shape = NULL,
+       caption = "Sources: A/C.1/73–79/PV.x (validated recorded votes); Voeten et al. roll calls via R package unvotes 0.3.0; method: Benati & Capurri (2026), doi:10.1007/s11135-026-02814-x.") +
+  theme(legend.position = "bottom", strip.text = element_text(size = 9))
+ggsave(fd("fig7_aindex_vs_agreement.png"), g7, width = 12.5, height = 7.2, dpi = 200); g7
+```
+
+# 5. Does China's 2026 abstention still look like a departure?
+
+```{r china2026}
+cr <- function(ds, m = "joint") pair_index(X[[ds]][, "China"], X[[ds]][, "Russian Federation"], m)
+ctab <- map_dfr(c("P18","P26","P26B"), ~ tibble(dataset = .x, description = lab_ds[.x], !!!as.list(cr(.x)), A_own = cr(.x, "own")["A"]))
+kable(ctab %>% mutate(across(c(lijphart, S, S0, A, A_own), ~ round(., 3))), caption = "China–Russia on procedural votes, before and after adding the 2026 programme-of-work vote")
+write_csv(ctab, od("aindex_table_china_russia_2026.csv"))
+# Same decomposition for Russia's other 2026 'No' partners and for China's other partners
+dec <- map_dfr(c("Iran (Islamic Republic of)","Democratic People’s Republic of Korea","Nicaragua","China","India","Algeria","Mali","Niger"), function(cn)
+  map_dfr(c("P18","P26"), ~ tibble(country = short(cn), dataset = .x, !!!as.list(pair_index(X[[.x]][, cn], X[[.x]][, "Russian Federation"])))))
+kable(dec %>% mutate(across(c(lijphart, S, S0, A), ~ round(., 3))) %>% select(country, dataset, n, lijphart, S, S0, A),
+      caption = "A with Russia before (P18) and after (P26) the 2026 vote, for the states whose 2026 positions are published")
+rk26 <- rk %>% filter(dataset %in% c("P18","P26"), country %in% c("China","Iran (Islamic Republic of)","Democratic People’s Republic of Korea","Nicaragua","Belarus","Cuba","Syrian Arab Republic","Venezuela (Bolivarian Republic of)","India","Algeria","Mali","Niger")) %>%
+  select(dataset, country, A, rank_A, partners) %>% mutate(country = short(country), A = round(A, 3)) %>% pivot_wider(names_from = dataset, values_from = c(A, rank_A, partners))
+kable(rk26, caption = "Rank among Russia's procedural partners before and after the 2026 vote (1 = most aligned)")
+jt <- table(China = factor(X$P18[, "China"], 1:3, c("Yes","Abstain","No")), Russia = factor(X$P18[, "Russian Federation"], 1:3, c("Yes","Abstain","No")), useNA = "ifany")
+kable(as.data.frame.matrix(jt), caption = "China (rows) × Russia (columns), 18 procedural votes 2018–24")
+# Bootstrap: is the post-2026 value outside the baseline's sampling range?
+a <- X$P18[, "China"]; b <- X$P18[, "Russian Federation"]
+bs <- replicate(4000, { k <- sample(18, 18, TRUE); pair_index(a[k], b[k])["A"] })
+cat("Baseline A (2018–24):", round(cr("P18")["A"], 3), "| bootstrap 95% interval:", round(quantile(bs, .025, na.rm = TRUE), 3), "to", round(quantile(bs, .975, na.rm = TRUE), 3),
+    "| after adding CRP.1:", round(cr("P26")["A"], 3), "\n")
+# Expectation under China's own baseline: if China and Russia vote independently with their 2018-24 marginals,
+# P(China votes differently from Russia's 'No')
+pc <- marg(a[!is.na(a)]); cat("China's 2018–24 procedural marginals (Yes/Abst/No):", round(pc, 3), "-> P(not No | independence) =", round(1 - pc[3], 3), "\n")
+# Predictive check: Russia's closest procedural partners (A, 2018–24) and their 2026 programme-of-work vote
+pred <- rk %>% filter(dataset == "P18") %>% arrange(rank_A) %>% slice_head(n = 15) %>%
+  left_join(v26 %>% select(country, vote_2026 = vote), by = "country") %>% mutate(vote_2026 = replace_na(vote_2026, "Yes or not voting (unpublished)"), country = short(country))
+kable(pred %>% select(rank_A, country, A, lijphart, vote_2026) %>% mutate(across(c(A, lijphart), ~ round(., 3))),
+      caption = "Russia's 15 most aligned partners on procedural votes 2018–24 (A-index) and how they voted on CRP.1 in 2026")
+write_csv(pred, od("aindex_table_russia_partners_vs_2026.csv"))
+# Substantive benchmark: China–Russia A by year
+yr <- items_v %>% filter(category == "substantive") %>% select(vote_id, year)
+by_year <- map_dfr(sort(unique(yr$year)), function(y) { ids <- yr$vote_id[yr$year == y]; Xs <- X$SUB[ids, , drop = FALSE]
+  bind_rows(tibble(year = y, pair = "China–Russia", !!!as.list(pair_index(Xs[, "China"], Xs[, "Russian Federation"]))),
+            tibble(year = y, pair = "India–Russia", !!!as.list(pair_index(Xs[, "India"], Xs[, "Russian Federation"])))) })
+kable(by_year %>% mutate(across(c(lijphart, S, S0, A), ~ round(., 3))), caption = "Substantive First Committee votes: A by year")
+write_csv(by_year, od("aindex_table_substantive_by_year.csv"))
+```
+
+# 6. Clique partitioning: blocs in the A-index network
+
+```{r cp}
+run_cp <- function(ds, lambda = 1, restarts = 60, ils = 40, M2 = FALSE) {
+  Xd <- if (M2) X2[[ds]] else X[[ds]]
+  keep <- colSums(!is.na(Xd)) >= min_n[ds]; M <- amatrix(Xd[, keep], lambda = lambda, min_n = min_n[ds])
+  W <- M$A; W[is.na(W)] <- 0; h <- cp_heuristic(W, restarts, ils)
+  list(labels = h$labels, W = W, A = M$A, objective = h$objective, share_best = h$share_best, all = h$all, objs = h$objs)
+}
+cps <- list(P18 = run_cp("P18"), P26 = run_cp("P26"), SUB = run_cp("SUB"), PLEN = run_cp("PLEN"))
+cps_m2 <- list(P18 = run_cp("P18", M2 = TRUE), SUB = run_cp("SUB", M2 = TRUE), PLEN = run_cp("PLEN", M2 = TRUE))
+describe_cp <- function(cp, ds) { lab <- cp$labels; sz <- table(lab); big <- names(sz)[sz >= 5]
+  name_of <- function(l) { m <- names(lab)[lab == l]
+    if ("United States of America" %in% m) "Cluster with USA" else if ("Russian Federation" %in% m) "Cluster with Russia" else if ("China" %in% m) "Cluster with China" else paste0("Other cluster ", l) }
+  coh <- function(m) { w <- cp$A[m, m]; mean(w[upper.tri(w)], na.rm = TRUE) }
+  tibble(dataset = ds, cluster = map_chr(big, name_of), size = as.integer(sz[big]), cohesion_meanA = map_dbl(big, ~ coh(names(lab)[lab == .x])),
+         members = map_chr(big, ~ paste(short(sort(names(lab)[lab == .x])), collapse = ", "))) %>%
+    bind_rows(tibble(dataset = ds, cluster = "Singletons / clusters of ≤4 (outliers)", size = sum(sz[sz < 5]), cohesion_meanA = NA,
+                     members = paste(short(sort(names(lab)[lab %in% names(sz)[sz < 5]])), collapse = ", "))) }
+cpt <- imap_dfr(cps, describe_cp)
+write_csv(cpt, od("aindex_table_cp_clusters.csv"))
+kable(cpt %>% mutate(cohesion_meanA = round(cohesion_meanA, 3)), caption = "Clique-partitioning blocs (λ = 1, absence = missing). k* counts clusters of ≥ 5 states")
+kable(tibble(dataset = names(cps), states = map_int(cps, ~ length(.x$labels)), k_raw = map_int(cps, ~ max(.x$labels)),
+             k_star = map_int(cps, ~ sum(table(.x$labels) >= 5)), objective = map_dbl(cps, "objective"), share_restarts_at_best = map_dbl(cps, "share_best"),
+             ARI_vs_M2 = c(ari(cps$P18$labels, cps_m2$P18$labels[names(cps$P18$labels)]), NA,
+                           ari(cps$SUB$labels, cps_m2$SUB$labels[names(cps$SUB$labels)]), ari(cps$PLEN$labels, cps_m2$PLEN$labels[names(cps$PLEN$labels)]))) %>%
+        mutate(across(c(objective, share_restarts_at_best, ARI_vs_M2), ~ round(., 3))),
+      caption = "Partition summary; ARI_vs_M2 compares with absence-as-abstention (M2) on the states common to both")
+# Who sits with whom across vote sets
+keyc <- c("Russian Federation","China","India","Belarus","Iran (Islamic Republic of)","Democratic People’s Republic of Korea","Nicaragua","Syrian Arab Republic","Cuba",
+          "Venezuela (Bolivarian Republic of)","Algeria","Mali","Niger","Burkina Faso","Egypt","Brazil","South Africa","United States of America","France","Germany")
+same_as <- function(cp, x, y) if (all(c(x, y) %in% names(cp$labels))) cp$labels[x] == cp$labels[y] else NA
+memb <- map_dfr(names(cps), function(ds) tibble(dataset = ds, country = short(keyc),
+  in_cp = keyc %in% names(cps[[ds]]$labels), with_Russia = map_lgl(keyc, ~ same_as(cps[[ds]], .x, "Russian Federation")),
+  with_USA = map_lgl(keyc, ~ same_as(cps[[ds]], .x, "United States of America")),
+  cluster_size = map_int(keyc, ~ if (.x %in% names(cps[[ds]]$labels)) sum(cps[[ds]]$labels == cps[[ds]]$labels[.x]) else NA_integer_)))
+kable(memb %>% pivot_wider(names_from = dataset, values_from = c(in_cp, with_Russia, cluster_size), names_vary = "slowest") %>% select(-starts_with("with_USA")),
+      caption = "Key states: placed in the partition? in Russia's cluster? size of own cluster")
+```
+
+## 6.1 Bridging or peripheral? China's position in the A-network
+
+Definitions (descriptive, not from the paper): *within-cluster alignment* = mean A with the other members of one's CP cluster; *strength* = sum of positive A; *participation coefficient* $P_i = 1 - \sum_c (w^+_{ic}/w^+_i)^2$ over the large clusters (0 = all positive alignment inside one cluster; higher = alignment spread across clusters, i.e. bridging); *betweenness* (normalised) on the graph of edges with A > 0.02, edge length 1/A. A state is read as **bridging** if it has high participation and betweenness, and as **peripheral** if its positive ties are weak and it sits at the edge of its own cluster.
+
+```{r position}
+position <- function(cp, ds) {
+  W <- cp$A; W[is.na(W)] <- 0; lab <- cp$labels; sz <- table(lab); big <- names(sz)[sz >= 5]; nm <- names(lab)
+  Wp <- pmax(W, 0); s <- rowSums(Wp)
+  wc <- sapply(big, function(cl) rowSums(Wp[, nm[lab == cl], drop = FALSE])); if (is.null(dim(wc))) wc <- matrix(wc, ncol = 1)
+  Pc <- 1 - rowSums((wc / pmax(rowSums(wc), 1e-12))^2)
+  within <- sapply(nm, function(i) { m <- setdiff(nm[lab == lab[i]], i); if (length(m)) mean(W[i, m]) else NA })
+  Wb <- W * (W > 0.02)   # edges: A > 0.02 (avoids near-zero weights producing numerically meaningless path lengths)
+  g <- graph_from_adjacency_matrix(Wb, mode = "undirected", weighted = TRUE, diag = FALSE)
+  btw <- betweenness(g, weights = 1 / E(g)$weight, normalized = TRUE)
+  tibble(dataset = ds, country = nm, cluster_size = as.integer(sz[as.character(lab)]), strength = s, within_cluster_A = within,
+         participation = Pc, betweenness = btw[nm]) %>%
+    mutate(across(c(strength, within_cluster_A, participation, betweenness), ~ percent_rank(.), .names = "{.col}_pctile"))
+}
+pos <- imap_dfr(cps, position)
+write_csv(pos, od("aindex_table_node_positions.csv"))
+kable(pos %>% filter(country %in% c("China","India","Russian Federation","Iran (Islamic Republic of)","Belarus","Algeria","Brazil","South Africa","Egypt","United States of America")) %>%
+        mutate(country = short(country), across(c(strength:betweenness_pctile), ~ round(., 3))) %>% arrange(dataset, desc(betweenness)),
+      caption = "Network position (percentiles are among all states in that partition)")
+```
+
+```{r network_fig, fig.height=8}
+net_plot <- function(cp, ds, title, file, top = 4, seed = 7) {
+  W <- cp$A; W[is.na(W)] <- 0; nm <- rownames(W); lab <- cp$labels[nm]; sz <- table(lab)
+  # keep, for each state, its `top` strongest positive ties (readability); layout uses these edges
+  keep <- matrix(FALSE, nrow(W), ncol(W)); for (i in seq_along(nm)) { o <- order(-W[i, ]); o <- o[W[i, o] > 0][seq_len(min(top, sum(W[i, ] > 0)))]; keep[i, o] <- TRUE }
+  keep <- keep | t(keep); Wk <- W * keep; Wk[Wk < 0] <- 0
+  g <- graph_from_adjacency_matrix(Wk, mode = "undirected", weighted = TRUE, diag = FALSE)
+  # draw states in CP clusters of >= 5 that belong to the largest connected component; outliers are listed instead
+  comp <- components(g); gc <- which(comp$membership == which.max(comp$csize) & as.integer(sz[as.character(lab)]) >= 5)
+  dropped <- setdiff(nm, nm[gc]); g <- induced_subgraph(g, gc); nm <- nm[gc]; lab <- lab[nm]
+  wl <- E(g)$weight; wl <- 0.2 + 0.8 * (wl - min(wl)) / max(1e-9, max(wl) - min(wl))   # rescaled weights for layout only
+  set.seed(seed); L <- layout_with_fr(g, weights = wl, niter = 3000)
+  nodes <- tibble(country = nm, x = L[,1], y = L[,2], cl = as.character(lab), size = as.integer(sz[as.character(lab)])) %>%
+    mutate(cluster = case_when(size < 5 ~ "Outlier (cluster ≤ 4)",
+                               cl == lab["United States of America"] ~ "CP cluster containing USA",
+                               cl == lab["Russian Federation"] ~ "CP cluster containing Russia",
+                               TRUE ~ paste("Other CP cluster", cl)))
+  el <- as_edgelist(g, names = FALSE); edges <- tibble(x = L[el[,1],1], y = L[el[,1],2], xend = L[el[,2],1], yend = L[el[,2],2], w = E(g)$weight)
+  labs_show <- c("Russian Federation","China","India","United States of America","Iran (Islamic Republic of)","Belarus","Democratic People’s Republic of Korea","Nicaragua",
+                 "Syrian Arab Republic","Cuba","Algeria","Mali","Niger","Egypt","Brazil","South Africa","France","Germany","Japan","Venezuela (Bolivarian Republic of)","Indonesia","Pakistan","Israel")
+  cols <- c("CP cluster containing USA" = "#2b8cbe", "CP cluster containing Russia" = "#d7301f", "Outlier (cluster ≤ 4)" = "grey60")
+  others <- setdiff(unique(nodes$cluster), names(cols)); cols <- c(cols, setNames(c("#fdae61","#4daf4a","#984ea3","#a65628")[seq_along(others)], others))
+  gg <- ggplot() + geom_segment(data = edges, aes(x, y, xend = xend, yend = yend, alpha = w), colour = "grey50", linewidth = .25) +
+    geom_point(data = nodes, aes(x, y, colour = cluster), size = 2.2) +
+    geom_point(data = nodes %>% filter(country == "China"), aes(x, y), shape = 21, size = 5, stroke = 1.2, colour = "black") +
+    geom_text(data = nodes %>% filter(country %in% labs_show), aes(x, y, label = short(country)), size = 3, family = "serif", vjust = -0.9) +
+    scale_colour_manual(values = cols) + scale_alpha(range = c(.05, .6), guide = "none") +
+    labs(title = title, subtitle = paste0("Nodes coloured by clique-partitioning cluster (λ = 1). Edges: each state's ", top, " strongest positive A ties. China circled.",
+                                        if (length(dropped)) paste0("\nNot drawn (CP outliers or no positive tie to the main component): ", paste(short(dropped), collapse = ", ")) else ""),
+         colour = NULL, caption = "Method: Benati & Capurri (2026), doi:10.1007/s11135-026-02814-x; CP solved heuristically (validated against exact ILP). Layout: Fruchterman–Reingold.") +
+    theme_void(base_family = "serif") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
+  ggsave(fd(file), gg, width = 11, height = 8.5, dpi = 200); gg
+}
+net_plot(cps$P26, "P26", "Figure 8. A-index network, First Committee procedural votes 2018–2026", "fig8_aindex_network_procedural.png")
+net_plot(cps$SUB, "SUB", "Figure 9. A-index network, First Committee substantive votes 2018–2023", "fig9_aindex_network_substantive.png")
+```
+
+## 6.2 Sensitivity to the resolution parameter λ (Eq. 15)
+
+```{r lambda}
+lams <- c(0, .5, .8, .95, 1, 1.1, 1.3, 1.6, 2)
+lam <- map_dfr(c("P26","SUB","PLEN"), function(ds) map_dfr(lams, function(l) { cp <- run_cp(ds, lambda = l, restarts = 25, ils = 20); lab <- cp$labels
+  tibble(dataset = ds, lambda = l, k_star = sum(table(lab) >= 5), largest = max(table(lab)),
+         China_with_Russia = lab["China"] == lab["Russian Federation"], India_with_Russia = lab["India"] == lab["Russian Federation"],
+         China_with_USA = lab["China"] == lab["United States of America"], India_with_USA = lab["India"] == lab["United States of America"],
+         China_cluster_size = sum(lab == lab["China"])) }))
+write_csv(lam, od("aindex_table_lambda_sensitivity.csv"))
+kable(lam, caption = "Clique partitioning for λ from 0 (S-index) to 2")
+g10 <- lam %>% select(dataset, lambda, China_with_Russia, India_with_Russia) %>% pivot_longer(-c(dataset, lambda)) %>%
+  mutate(name = recode(name, China_with_Russia = "China in Russia's cluster", India_with_Russia = "India in Russia's cluster"),
+         dataset = factor(lab_ds[dataset], levels = lab_ds[c("P26","SUB","PLEN")])) %>%
+  mutate(y = as.integer(value) + if_else(name == "China in Russia's cluster", 0.04, -0.04)) %>%
+  ggplot(aes(lambda, y, colour = name)) + geom_step(linewidth = 1, direction = "mid") + geom_point(size = 2) +
+  facet_wrap(~ dataset, ncol = 1) + scale_y_continuous(breaks = 0:1, labels = c("no","yes")) + scale_colour_manual(values = c("#7a0177", "#fdae61")) +
+  labs(title = "Figure 10. Is China (or India) clustered with Russia? Sensitivity to the resolution parameter λ",
+       subtitle = "λ = 0: S-index (raw similarity); λ = 1: A-index; λ > 1: stronger correction for expected similarity",
+       x = "λ", y = NULL, colour = NULL, caption = "Clique partitioning on a^λ = S − λ·S0 (Benati & Capurri 2026, Eq. 15).") + theme(legend.position = "bottom")
+ggsave(fd("fig10_lambda_sensitivity.png"), g10, width = 10, height = 7, dpi = 200); g10
+```
+
+# 7. Blocs: cohesion and alignment with Russia under A
+
+```{r blocs}
+grp <- list(`EU-27` = ref$country[ref$eu27 == 1], NAM = ref$country[ref$nam_2026 == 1], AES = ref$country[ref$aes_sahel == 1],
+            `African Group` = ref$country[ref$un_regional_group == "African Group"], `Asia-Pacific Group` = ref$country[ref$un_regional_group == "Asia and the Pacific Group"],
+            GRULAC = ref$country[str_detect(ref$un_regional_group, "GRULAC")])
+bl <- map_dfr(c("P18","SUB","PLEN"), function(ds) { M <- amatrix(X[[ds]], min_n = min_n[ds])$A
+  imap_dfr(grp, function(m, g) { m <- setdiff(m, "Russian Federation"); w <- M[m, m]
+    tibble(dataset = ds, bloc = g, members_scored = sum(!is.na(M[m, "Russian Federation"])), cohesion_meanA = mean(w[upper.tri(w)], na.rm = TRUE),
+           meanA_with_Russia = mean(M[m, "Russian Federation"], na.rm = TRUE), meanA_with_USA = mean(M[setdiff(m, "United States of America"), "United States of America"], na.rm = TRUE)) }) })
+write_csv(bl, od("aindex_table_blocs.csv"))
+kable(bl %>% mutate(across(c(cohesion_meanA, meanA_with_Russia, meanA_with_USA), ~ round(., 3))), caption = "Bloc cohesion (mean within-bloc A, as in the paper) and mean A with Russia and with the USA")
+```
+
+# 8. Limitations of this update
+
+* **Small N on procedure.** A on 18–19 procedural votes is noisy; bootstrap intervals (§4) are wide, and one added vote cannot move A outside them. The 2026 vote enters only for pairs among the 12 states whose positions were published; the "coded Yes" variant is a hypothetical bound, not data.
+* **Missing marginals.** Many states rarely vote on procedural motions; under M1 their pairs are not scored (minimum 8 joint votes), and states such as Burkina Faso drop out of the procedural network entirely. M2 (absence = abstention) changes this; see the ARI.
+* **Implementation choices.** Marginals on $K_{ij}$ (main) vs $K_i$ (literal Eq. 3); heuristic CP (validated, but not a proof of optimality for 190 states); network-position measures are our descriptive additions, not part of the paper.
+* **Plenary coverage** stops in 2019 for raw roll calls (see §3).
+* **Interpretation.** A measures conditional co-voting beyond chance. It is still not coordination and not causation; abstentions remain ambiguous signals.
+
+# 9. Reproduction
+
+1. `Rscript code/extract_plenary_unvotes.R data/plenary_unvotes_2018_2019.csv` (needs R package `unvotes` 0.3.0).
+2. `Rscript -e 'rmarkdown::render("code/alignment_index_update.Rmd", output_dir = "output")'` (uses `code/aindex_functions.R`, `igraph`, `lpSolve`, `mclust`).
+
+```{r session}
+sessionInfo()
+```
